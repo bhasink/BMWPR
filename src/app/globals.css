@@ -1,75 +1,3 @@
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-Bold.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-BoldItalic.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-BoldItalic.woff') format('woff');
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-Heavy.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-Heavy.woff') format('woff');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-Italic.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-Italic.woff') format('woff');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-HeavyItalic.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-HeavyItalic.woff') format('woff');
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-Light.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-Light.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad Outline';
-  src: url('/fonts/BMWMotorradOutline-Regular.woff2') format('woff2'),
-  url('/fonts/BMWMotorradOutline-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BMW Motorrad';
-  src: url('/fonts/BMWMotorrad-Regular.woff2') format('woff2'),
-  url('/fonts/BMWMotorrad-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 
 
 body {
@@ -86,7 +14,7 @@ body {
   padding-top: 74px;
   margin: 0;
   font-family: Arial;
-background:#000;
+background:#000 !important;
 }
 
 
@@ -139,6 +67,7 @@ header.site-header.topmain nav.navbar {
 .site-header.topmain nav.navbar .navbar-brand {
       width: 36vh;
   margin: 0;
+  display: inline-block;
 }
 
 .site-header.topmain nav.navbar .navbar-brand img {
@@ -157,8 +86,12 @@ header.site-header.topmain nav.navbar {
 .outer-optns a {
   color: #000;
   margin-right: 16px;
-  text-decoration:none;
+  text-decoration:none !important;
   font-size: 14px;
+}
+
+.outer-optns a:hover{
+  color: #000;
 }
 
 .outer-optns a i.fas.fa-bars {

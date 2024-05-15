@@ -269,6 +269,8 @@ export default function Home() {
       </div>
     </div>
   </header>
+
+  <div className="htmcolls-mn">
   <section className="emi-shws ptp-7 ptb-7">
     <div className="container">
       <div className="cmn-heads">
@@ -596,7 +598,7 @@ export default function Home() {
           </div>
           <div className="card">
             <div className="prod-shws">
-              <a href="post-internal.html">
+              <a href="#">
                 <div className="pst-socmains">
                   <img className="social-assts" src="./images/social-all/soc5.jpg" alt />
                   <img src="./images/vdo-icon.png" className="vdopl-ns" />
@@ -658,7 +660,7 @@ export default function Home() {
           </div>
           <div className="card">
             <div className="prod-shws">
-              <a href="post-internal.html">
+              <a href="#">
                 <div className="pst-socmains">
                   <img className="social-assts" src="./images/social-all/soc6.jpg" alt />
                   <img src="./images/vdo-icon.png" className="vdopl-ns" />
@@ -900,7 +902,7 @@ export default function Home() {
   </div>
 </div>
 
-
+</div>
 
    </>
   );

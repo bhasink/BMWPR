@@ -139,6 +139,7 @@ header.site-header.topmain nav.navbar {
 .site-header.topmain nav.navbar .navbar-brand {
         width: 36vh;
     margin: 0;
+    display: inline-block;
 }
 
 .site-header.topmain nav.navbar .navbar-brand img {
