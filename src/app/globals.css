@@ -17,6 +17,62 @@ body {
 background:#000 !important;
 }
 
+.nmi{
+  text-align: center;
+  color: white;
+}
+
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.product-card {
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  margin: 16px;
+  width: 300px;
+}
+
+@media (min-width: 1200px) {
+  .product-card {
+    flex: 1 1 calc(25% - 32px);
+    margin: 16px;
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 768px) {
+  .product-card {
+    flex: 1 1 calc(33.333% - 32px);
+    margin: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-card {
+    flex: 1 1 calc(50% - 32px);
+    margin: 16px;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -450px 0;
+  }
+  100% {
+    background-position: 450px 0;
+  }
+}
+
+.skeleton-loader {
+  animation: shimmer 1.6s infinite linear;
+}
+
 
 header.site-header.topmain {
   position: fixed;

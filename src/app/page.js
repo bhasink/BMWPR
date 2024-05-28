@@ -1,20 +1,147 @@
 "use client";
 import { useState, useEffect  } from "react";
 import "bootstrap";
+import Link from 'next/link'
+import { useRouter } from 'next/navigation';
+import axios from 'axios'
+import Head from 'next/head'
+import ContentLoader from 'react-content-loader'
+import UserList from '@/components/Header'
+import InfiniteScroll from '../../InfiniteScroll';
+import { fetchItems } from '@/services/itemService';
+import LoadingSpinner from '@/components/LoadingSpinner'; // Import the LoadingSpinner component
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
 
-import Image from "next/image";
-// import styles from "./page.module.css";
+
 
 export default function Home() {
 
   const [isActive, setIsActive] = useState(false);
   const [isActiveConModal, setIsActiveConModal] = useState(false);
 
+  const [items, setItems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState(null); 
+  
+  const [productionData, setProductionData] = useState([])
+  const [courseMode, setCourseMode] = useState('production')
+  const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
+  const [loader, setLoader] = useState(false)
+  const [loaderN, setLoaderN] = useState(false)
+  const [currentPageFilter, setCurrentPageFilter] = useState(1)
+  const [total, setTotal] = useState(1)
+  const router = useRouter()
+
 
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
+  useEffect(() => {
+    // if (router.isReady) {
+      listing()
+    // }
+  }, [])
+
+
+
+  // const loadMore = async () => {
+  //   if (loading) return;
+  //   setLoading(true);
+  //   try {
+
+      // const data = await fetchItems(page);
+
+      // console.log('sdfsd');
+      // console.log(data);
+
+      // if (data.data.get_feeds.data.length === 0) {
+      //   setHasMore(false);
+      // } else {
+
+      //   setItems([...items, ...data]);
+
+      //   const get_feeds = data.data.get_feeds.data
+      //   setProductionData([...productionData,...get_feeds])
+      
+      //   setTotal(data.data.get_feeds.total)
+      //   setCurrentPageFilter(2)
+
+      //   setPage(page + 1);
+      // }
+  //   } catch (error) {
+  //     setError(error); // Set the error state
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   loadMore();
+  // }, []);
+
+
+  const listing = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API}/listing`)
+      console.log(data)
+      const get_feeds = data.data.get_feeds.data
+      setProductionData(get_feeds)
+      setTotal(data.data.get_feeds.total)
+      setCurrentPageFilter(2)
+
+      console.log(get_feeds)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
+  const filtersLoadMoreData = async (data) => {
+    setCurrentPageFilter(currentPageFilter+1)
+    setLoader(true)
+    setLoading(true);
+
+    try {
+      const config = {
+        headers: { 'Content-Type': 'application/json' },
+      }
+
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/listing?page=${currentPageFilter}`,
+        {
+          type: courseMode,
+        },
+        config,
+      )
+
+      if (data.data.get_feeds.data.length === 0) {
+        setHasMore(false);        
+      }
+
+  
+
+      const get_work = data.data.get_feeds.data
+      const get_work_last_page = data.data.get_feeds.last_page
+
+      setProductionData((oldArray) => [...oldArray, ...get_work])
+
+      if (get_work_last_page == currentPageFilter) {
+        setFilterCoursesLastPage(true)
+      }
+
+      setLoader(false)
+      setLoading(false);
+
+      console.log(data)
+    } catch (err) {
+      console.log(err)
+      setLoader(false)
+      setLoading(false);
+    }
+  }
   
 
   const handleClick = () => {
@@ -32,9 +159,6 @@ export default function Home() {
     const myModal = new Modal("#exampleModal-11");
     myModal.show();
   };
-
-
-  
 
   const showModalVideo = () => {
   
@@ -92,6 +216,8 @@ export default function Home() {
       </button>  */}
       </div>
     </nav>
+   
+   
     <div className="panelmain-tophdrs calentop">
       <div className="menuset clnfilter">
         <div className="calen-years">
@@ -271,6 +397,8 @@ export default function Home() {
   </header>
 
   <div className="htmcolls-mn">
+
+
   <section className="emi-shws ptp-7 ptb-7">
     <div className="container">
       <div className="cmn-heads">
@@ -297,27 +425,62 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="card">
+        
+   
+        
+          {productionData &&
+                productionData.map((listing, key) => (
+          
+          <div key={key} className="card">
+        
+      
             <div className="prod-shws">
               {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">Time of India</a></div>
+              <div className="post-hndls"><a href="#">
+                
+              {listing.platform}
+
+                </a></div>
               <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/2.png" alt />
+
+                  {listing.thumbnail != null && (
+                    
+                // <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${listing.thumbnail.replace(/ /g, '_')}`} alt />
+                <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/7_IG_Jan.jpg`} alt />
+
+                )}
+
+{listing.thumbnail == null && (
+                    
+                    <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/7_IG_Jan.jpg`} alt />
+                 
+                    )}
+             
+             
                 <div className="bottom-txt">
-                  <h3 className="post-tts">Lorem IPSUM</h3>
-                  <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                  <h3 className="post-tts">{listing.name}</h3>
+                  <p className="subs-descs">{listing.short_description}</p>
                 </div>
                 <div className="vwcentrs text-center">
                   <a href="#" className="goview-cta">View</a>
                 </div>
               </div>
             </div>
+
           </div>
-          <div className="card" onClick={showModalVideo}>
+         
+         ))}
+
+
+
+
+      
+
+          {/* <div className="card" onClick={showModalVideo}>
             <div className="prod-shws">
               {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal-15">
+              {/* <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div> */}
+              {/* <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal-15">
                 <div className="pst-socmains">
                   <img className="social-assts" src="./images/social-all/soc1.jpg" alt />
                   <img src="./images/vdo-icon.png" className="vdopl-ns" />
@@ -327,439 +490,94 @@ export default function Home() {
                   </div>
                 </div>
               </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/faceigs.png" /></a></div>
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/1-row-2.png" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc3.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">Time Of India </a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/3.png" alt />
-                <div className="bottom-txt">
-                  <h3 className="post-tts">Lorem IPSUM</h3>
-                  <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                </div>
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta" data-toggle="modal" data-target="#exampleModal-11">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">Time of India</a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/4.png" alt />
-                <div className="bottom-txt">
-                  <h3 className="post-tts">Lorem IPSUM</h3>
-                  <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                </div>
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc4.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div> 
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/youtube.png" /></a></div>
-              <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal-12"><div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc5.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                  </div>
-                </div></a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/faceigs.png" /></a></div>
-              <a href="#"><div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc6.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                  </div>
-                </div></a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc7.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/5.png" alt />
-                <div className="bottom-txt">
-                  <h3 className="post-tts">Lorem IPSUM</h3>
-                  <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                </div>
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/faceigs.png" /></a></div>
-              <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal-14"><div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc1.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                  </div>
-                </div></a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/twitterx.png" /></a></div>
-              <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal-16"><div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc8.jpg" alt />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                  </div>
-                </div></a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc9.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc10.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc11.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
+            </div> */}
+          {/* </div>  */}
+
+
         </div>
       </div>
     </div>
   </section>
-  <section className="emi-shws ptp-7 ptb-7">
-    <div className="container">
-      <div className="cmn-heads">
-        <p className="sb-hds">FEBRUARY</p>
-        <h1 className="tm-hd">2024</h1>
-      </div>
-    </div>
-    <div className="social-gridswbs">
-      <div className="container">
-        <div className="card-columns">
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/1.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/2.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          &lt;<div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/3.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/4.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc5.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/5.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/6.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/7.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/8.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              <a href="#">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc6.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/9.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/10.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/11.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/12.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/13.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/14.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/15.png" alt />
-                <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+
+
+     
+
+
+
+  {loading && 
+  
+  
+  <div className="product-list">
+
+  <ContentLoader 
+  speed={2}
+  width={250}
+  height={400}
+  viewBox="0 0 300 400"
+  backgroundColor="#f3f3f3"
+  foregroundColor="#ecebeb"
+  className="skeleton-loader"
+>
+  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+</ContentLoader>
+
+<ContentLoader 
+  speed={2}
+  width={250}
+  height={400}
+  viewBox="0 0 300 400"
+  backgroundColor="#f3f3f3"
+  foregroundColor="#ecebeb"
+  className="skeleton-loader"
+>
+  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+</ContentLoader>
+
+<ContentLoader 
+  speed={2}
+  width={250}
+  height={400}
+  viewBox="0 0 300 400"
+  backgroundColor="#f3f3f3"
+  foregroundColor="#ecebeb"
+  className="skeleton-loader"
+>
+  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+</ContentLoader>
+
+<ContentLoader 
+  speed={2}
+  width={250}
+  height={400}
+  viewBox="0 0 300 400"
+  backgroundColor="#f3f3f3"
+  foregroundColor="#ecebeb"
+  className="skeleton-loader"
+>
+  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+</ContentLoader>
+
+</div>
+
+  }    
+        {error && <p>Error: {error.message}</p>} 
+        {!loading && hasMore && <InfiniteScroll filtersLoadMoreData={filtersLoadMoreData} hasMore={hasMore} />}
+         {!loading && !hasMore && <p className="nmi">No more items to load.</p>}
+
+
+
   <div className={isActiveConModal ? 'modal fade show' : 'modal fade'} id="exampleModal-11" tabIndex={-1} aria-labelledby="exampleModalLabel-11" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered">
       <div className="modal-content">
