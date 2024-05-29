@@ -11,8 +11,15 @@ import InfiniteScroll from '../../InfiniteScroll';
 import { fetchItems } from '@/services/itemService';
 import LoadingSpinner from '@/components/LoadingSpinner'; // Import the LoadingSpinner component
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import Modal from 'react-modal';
+import ReactHtmlParser from 'react-html-parser'
 
+import _ from "lodash";
+import RGL, { WidthProvider } from "react-grid-layout";
+// import 'react-loading-skeleton/dist/skeleton.css'
+import '/node_modules/react-grid-layout/css/styles.css';
+import '/node_modules/react-resizable/css/styles.css';
 
 
 export default function Home() {
@@ -27,6 +34,8 @@ export default function Home() {
   const [error, setError] = useState(null); 
   
   const [productionData, setProductionData] = useState([])
+  const [productionSingleData, setProductionSingleData] = useState([])
+
   const [courseMode, setCourseMode] = useState('production')
   const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
   const [loader, setLoader] = useState(false)
@@ -34,6 +43,8 @@ export default function Home() {
   const [currentPageFilter, setCurrentPageFilter] = useState(1)
   const [total, setTotal] = useState(1)
   const router = useRouter()
+
+
 
 
   useEffect(() => {
@@ -46,7 +57,12 @@ export default function Home() {
     // }
   }, [])
 
-
+  const layout = [
+    { i: '1', x: 0, y: 0, w: 1, h: 1 },
+    { i: '2', x: 1, y: 0, w: 1, h: 1 },
+    { i: '3', x: 2, y: 0, w: 1, h: 1 },
+    { i: '4', x: 3, y: 0, w: 1, h: 1 },
+  ];
 
   // const loadMore = async () => {
   //   if (loading) return;
@@ -126,7 +142,11 @@ export default function Home() {
       const get_work = data.data.get_feeds.data
       const get_work_last_page = data.data.get_feeds.last_page
 
-      setProductionData((oldArray) => [...oldArray, ...get_work])
+      const n_array = [ ...productionData, ...get_work];
+
+      console.log(n_array);
+
+      setProductionData(n_array)
 
       if (get_work_last_page == currentPageFilter) {
         setFilterCoursesLastPage(true)
@@ -167,10 +187,121 @@ export default function Home() {
     myModal.show();
   };
 
+   // State to store image heights
+   const [imageHeights, setImageHeights] = useState({});
+
+   // Function to generate a random height for each grid item
+   const generateRandomHeights = () => {
+     const heights = {};
+     layout.forEach((item, index) => {
+       heights[index] = Math.floor(Math.random() * (300 - 100 + 1)) + 100; // Random height between 100 and 300
+     });
+     return heights;
+   };
+ 
+   // State to store additional data for each grid item
+   const [additionalData] = useState([
+     { id: '1', title: 'Item 1', description: 'Description for Item 1' },
+     { id: '2', title: 'Item 2', description: 'Description for Item 2' },
+     { id: '3', title: 'Item 3', description: 'Description for Item 3' },
+     { id: '4', title: 'Item 4', description: 'Description for Item 4' },
+   ]);
+ 
+   // Fetch image dimensions and update state
+   useEffect(() => {
+     const heights = generateRandomHeights();
+     setImageHeights(heights);
+   }, []); // Run once on component mount
 
 
+   let subtitle;
+   const [modalIsOpen, setIsOpen] = useState(false);
+ 
+   function openModal() {
+     setIsOpen(true);
+   }
+ 
+   function afterOpenModal() {
+     // references are now sync'd and can be accessed.
+     subtitle.style.color = '#f00';
+   }
+ 
+   function closeModal() {
+     setIsOpen(false);
+   }
+
+
+   const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: 10
+    },
+  };
+
+  const SetNewObject = (listing) => {
+    setProductionSingleData(listing);
+  };
+ 
   return (
    <>
+
+<div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+       
+
+       <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="crs-mdls">
+          <button onClick={closeModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="post-holder imagefrm-single">
+            <div className="main-pstimgs">
+
+              {productionSingleData && productionSingleData.thumbnail && 
+
+              <>
+              
+              <img  src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${productionSingleData.thumbnail.replace(/ /g, '_')}`} alt />
+
+              
+              </>
+              
+              
+              }
+
+
+            </div>
+            <h3 className="post-tts">
+
+              {productionSingleData.name}
+            </h3>
+            <p className="subs-descs">
+
+            {ReactHtmlParser(productionSingleData.description)}
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      </Modal>
+    </div>
+
 <div>
   <header className="site-header topmain mobexheight norm">
     <nav className="navbar navbar-expand-lg navbar-lg-light">
@@ -396,8 +527,27 @@ export default function Home() {
     </div>
   </header>
 
-  <div className="htmcolls-mn">
 
+  {/* <GridLayout className="layout" layout={layout} cols={4} rowHeight={200} width={1200}>
+      {layout.map((item, index) => (
+        <div key={item.i} style={{ backgroundColor: 'lightgray', padding: '10px', height: `${imageHeights[index]}px` }}>
+          <img src={`https://picsum.photos/200/${imageHeights[index]}?random=${index}`} alt={`Image ${item.i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div>
+            <h3>{additionalData[index].title}</h3>
+            <p>{additionalData[index].description}</p>
+          </div>
+        </div>
+      ))}
+
+
+      
+    </GridLayout> */}
+
+
+    
+
+
+  <div className="htmcolls-mn">
 
   <section className="emi-shws ptp-7 ptb-7">
     <div className="container">
@@ -408,61 +558,112 @@ export default function Home() {
     </div>
     <div className="social-gridswbs">
       <div className="container">
-        <div className="card-columns">
-          <div className="card">
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">Time of India </a></div>
-              <div className="pst-socmains">
-                <img className="social-assts" src="./images/social-all/news/1.png" alt />
-                <div className="bottom-txt">
-                  <h3 className="post-tts">Lorem IPSUM</h3>
-                  <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                </div>
-                <div className="vwcentrs text-center">
-                  <a  onClick={showModal} href="#" className="goview-cta" data-toggle="modal" data-target="#exampleModal-11">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        
-   
-        
+        <div className="card-columnsss">
+     
+        <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}>
+      <Masonry columnsCount="4" gutter="20px">
           {productionData &&
                 productionData.map((listing, key) => (
           
-          <div key={key} className="card">
+          <div key={key} className="card" 
+          onClick={() => SetNewObject(listing)}
+
+          >
         
       
             <div className="prod-shws">
               {/* place where user can add post handlle URL or handlename */}
-              <div className="post-hndls"><a href="#">
+              <div className="post-hndls">
                 
-              {listing.platform}
+                <a target="_blank" href={listing.external_link}>
+                
+              {
+              
+              listing.platform.split(',')[0] == 'Fb' && 
+              
+              <>
+              @
+              
+              {listing.platform.split(',')[1]}
+
+              <img src="/images/faceigs.png" />
+              </>
+              
+              }   
+
+
+               {
+              
+              listing.platform.split(',')[0] == 'IG' && 
+              
+              <>
+              @
+              
+              {listing.platform.split(',')[1]}
+
+              <img src="/images/insta.png" />
+              </>
+              
+              }    
+
+
+              {
+              
+              listing.platform.split(',')[0] == 'Youtube' && 
+              
+              <>
+              @
+              
+              {listing.platform.split(',')[1]}
+
+              <img src="/images/youtube.png" />
+              </>
+              
+              }    
+
+              {
+              
+              listing.platform.split(',')[0] == 'others' && 
+              
+              <>
+              
+              
+              {listing.platform.split(',')[1]}
+
+        
+              </>
+              
+              }    
 
                 </a></div>
               <div className="pst-socmains">
 
-                  {listing.thumbnail != null && (
+                  {listing.thumbnail != '' && (
                     
-                // <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${listing.thumbnail.replace(/ /g, '_')}`} alt />
-                <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/7_IG_Jan.jpg`} alt />
+                <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${listing.thumbnail.replace(/ /g, '_')}`} alt />
+                // <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/7_IG_Jan.jpg`} alt />
 
                 )}
 
-{listing.thumbnail == null && (
+{listing.thumbnail == '' && (
                     
                     <img className="social-assts" src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/7_IG_Jan.jpg`} alt />
                  
                     )}
-             
+
+{listing.post_type == 'video' && 
+<>
+<img src="./images/vdo-icon.png" class="vdopl-ns" />
+     </>  
+     
+}
              
                 <div className="bottom-txt">
                   <h3 className="post-tts">{listing.name}</h3>
                   <p className="subs-descs">{listing.short_description}</p>
                 </div>
                 <div className="vwcentrs text-center">
-                  <a href="#" className="goview-cta">View</a>
+                  <a onClick={openModal} href="#" className="goview-cta">View</a>
                 </div>
               </div>
             </div>
@@ -471,7 +672,8 @@ export default function Home() {
          
          ))}
 
-
+</Masonry>
+    </ResponsiveMasonry>
 
 
       
@@ -500,76 +702,81 @@ export default function Home() {
   </section>
 
 
-     
-
-
 
   {loading && 
   
-  
-  <div className="product-list">
+ 
+  <div className="prodsct">
 
-  <ContentLoader 
-  speed={2}
-  width={250}
-  height={400}
-  viewBox="0 0 300 400"
-  backgroundColor="#f3f3f3"
-  foregroundColor="#ecebeb"
-  className="skeleton-loader"
->
-  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
-  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
-  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
-  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
-</ContentLoader>
+  {/* <Skeleton className="nmi" circle={true} height={50} width={50} /> */}
+  <Skeleton count={5} />
 
-<ContentLoader 
-  speed={2}
-  width={250}
-  height={400}
-  viewBox="0 0 300 400"
-  backgroundColor="#f3f3f3"
-  foregroundColor="#ecebeb"
-  className="skeleton-loader"
->
-  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
-  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
-  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
-  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
-</ContentLoader>
-
-<ContentLoader 
-  speed={2}
-  width={250}
-  height={400}
-  viewBox="0 0 300 400"
-  backgroundColor="#f3f3f3"
-  foregroundColor="#ecebeb"
-  className="skeleton-loader"
->
-  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
-  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
-  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
-  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
-</ContentLoader>
-
-<ContentLoader 
-  speed={2}
-  width={250}
-  height={400}
-  viewBox="0 0 300 400"
-  backgroundColor="#f3f3f3"
-  foregroundColor="#ecebeb"
-  className="skeleton-loader"
->
-  <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
-  <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
-  <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
-  <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
-</ContentLoader>
 
 </div>
+
+//   <div className="product-list">
+
+//   <ContentLoader 
+//   speed={2}
+//   width={250}
+//   height={400}
+//   viewBox="0 0 300 400"
+//   backgroundColor="#f3f3f3"
+//   foregroundColor="#ecebeb"
+//   className="skeleton-loader"
+// >
+//   <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+//   <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+//   <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+//   <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+// </ContentLoader>
+
+// <ContentLoader 
+//   speed={2}
+//   width={250}
+//   height={400}
+//   viewBox="0 0 300 400"
+//   backgroundColor="#f3f3f3"
+//   foregroundColor="#ecebeb"
+//   className="skeleton-loader"
+// >
+//   <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+//   <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+//   <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+//   <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+// </ContentLoader>
+
+// <ContentLoader 
+//   speed={2}
+//   width={250}
+//   height={400}
+//   viewBox="0 0 300 400"
+//   backgroundColor="#f3f3f3"
+//   foregroundColor="#ecebeb"
+//   className="skeleton-loader"
+// >
+//   <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+//   <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+//   <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+//   <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+// </ContentLoader>
+
+// <ContentLoader 
+//   speed={2}
+//   width={250}
+//   height={400}
+//   viewBox="0 0 300 400"
+//   backgroundColor="#f3f3f3"
+//   foregroundColor="#ecebeb"
+//   className="skeleton-loader"
+// >
+//   <rect x="0" y="0" rx="10" ry="10" width="300" height="200" />
+//   <rect x="0" y="220" rx="4" ry="4" width="220" height="20" />
+//   <rect x="0" y="250" rx="3" ry="3" width="300" height="15" />
+//   <rect x="0" y="275" rx="3" ry="3" width="200" height="15" />
+// </ContentLoader>
+
+// </div>
 
   }    
         {error && <p>Error: {error.message}</p>} 
