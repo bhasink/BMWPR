@@ -239,7 +239,9 @@ export default function Home() {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      zIndex: 10
+      zIndex: 10,
+      background: 'none',
+      border: 'none'
     },
   };
 
@@ -271,17 +273,31 @@ export default function Home() {
           <div className="post-holder imagefrm-single">
             <div className="main-pstimgs">
 
-              {productionSingleData && productionSingleData.thumbnail && 
 
-              <>
+              {productionSingleData.post_type == "Video" && 
               
-              <img  src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${productionSingleData.thumbnail.replace(/ /g, '_')}`} alt />
-
+              <>
+            
+              <iframe src="https://player.vimeo.com/video/950724818?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="100%" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" title="97 IG Feb"></iframe>
               
               </>
               
+              }
+
+
+              {productionSingleData.post_type == "text" && 
+         
+                <>
+                
+                <img  src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${productionSingleData.thumbnail.replace(/ /g, '_')}`} alt />
+  
+                
+                </>
               
               }
+
+
+            
 
 
             </div>
@@ -564,7 +580,8 @@ export default function Home() {
       <Masonry columnsCount="4" gutter="20px">
           {productionData &&
                 productionData.map((listing, key) => (
-          
+                  <a onClick={openModal} className="goview-cta">
+
           <div key={key} className="card" 
           onClick={() => SetNewObject(listing)}
 
@@ -651,7 +668,7 @@ export default function Home() {
                  
                     )}
 
-{listing.post_type == 'video' && 
+{listing.post_type == 'Video' && 
 <>
 <img src="./images/vdo-icon.png" class="vdopl-ns" />
      </>  
@@ -669,6 +686,8 @@ export default function Home() {
             </div>
 
           </div>
+
+          </a>
          
          ))}
 
