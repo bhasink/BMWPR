@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect  } from "react";
-import "bootstrap";
+// import "bootstrap";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import axios from 'axios'
@@ -15,7 +15,7 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import Modal from 'react-modal';
 import ReactHtmlParser from 'react-html-parser'
 
-import _ from "lodash";
+// import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 // import 'react-loading-skeleton/dist/skeleton.css'
 import '/node_modules/react-grid-layout/css/styles.css';
