@@ -698,8 +698,6 @@ font-size: 2.7vh;
 }
 
 
-
-
 /* footer css */
 
 
@@ -2191,3 +2189,8 @@ tr.bullet_cls .hf-mbs {
 
 }
 
+@media only screen and (max-width: 767px) {
+  .hdkw {
+      display: none;
+  }
+}

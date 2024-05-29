@@ -103,7 +103,7 @@ export default function Home() {
     try {
       const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API}/listing`)
       console.log(data)
-      const get_feeds = data.data.get_feeds.data
+      const get_feeds = data.data.get_feeds
       setProductionData(get_feeds)
       setTotal(data.data.get_feeds.total)
       setCurrentPageFilter(2)
@@ -133,13 +133,13 @@ export default function Home() {
         config,
       )
 
-      if (data.data.get_feeds.data.length === 0) {
+      if (data.data.get_feeds.length === 0) {
         setHasMore(false);        
       }
 
   
 
-      const get_work = data.data.get_feeds.data
+      const get_work = data.data.get_feeds
       const get_work_last_page = data.data.get_feeds.last_page
 
       const n_array = [ ...productionData, ...get_work];
@@ -303,7 +303,7 @@ export default function Home() {
             </div>
             <h3 className="post-tts">
 
-              {productionSingleData.name}
+              {productionSingleData.name} - {productionSingleData.id}
             </h3>
             <p className="subs-descs">
 
@@ -350,7 +350,7 @@ export default function Home() {
         </div>
         <div className="outer-optns">
           {/*<a href="#" class="br-bld"><i class="fas fa-bars"></i> Menu</a> */}
-          <a onClick={handleClickSearch} className="srch-pns " href="javascript:void(0);"><i className="far fa-search" /></a>
+          {/* <a onClick={handleClickSearch} className="srch-pns " href="javascript:void(0);"><i className="far fa-search" /></a> */}
           {/*<a class="fnddels-pns clnctamn" href="javascript:void(0);"><i class="far fa-angle-down"></i> Calendar</a> */}
           <a  onClick={handleClick} className="fnddels-pns eventctaall" href="javascript:void(0);">Filter By: <i className="fal fa-filter" /></a>
           {/*<a class="fnddels-pns eventctaall" href="javascript:void(0);"><i class="far fa-angle-down"></i> Topics</a>
@@ -535,12 +535,12 @@ export default function Home() {
         </div>
       </div>
     </div>
-    <div className={isActiveConModal ? '"panelmain-tophdrs searchallmain openpnls' : '"panelmain-tophdrs searchallmain'}>
+    {/* <div className={isActiveConModal ? '"panelmain-tophdrs searchallmain openpnls' : '"panelmain-tophdrs searchallmain'}>
       <div className="global-srchbrs">
         <div className="mnclosd"><i className="far fa-times" /> </div>
         <div className="srch-inps"><input type="text" placeholder="Your Search Request" /></div>
       </div>
-    </div>
+    </div> */}
   </header>
 
 
@@ -566,23 +566,37 @@ export default function Home() {
   <div className="htmcolls-mn">
 
   <section className="emi-shws ptp-7 ptb-7">
-    <div className="container">
-      <div className="cmn-heads">
-        <p className="sb-hds">January</p>
-        <h1 className="tm-hd">2024</h1>
-      </div>
-    </div>
+   
+  
     <div className="social-gridswbs">
       <div className="container">
         <div className="card-columnsss">
+
+       
      
         <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}>
       <Masonry columnsCount="4" gutter="20px">
+
           {productionData &&
                 productionData.map((listing, key) => (
-                  <a onClick={openModal} className="goview-cta">
+               
+               <div key={key}>
 
-          <div key={key} className="card" 
+ {listing.custom_field && 
+
+<>
+{ReactHtmlParser(listing.custom_field)}
+</>
+
+} 
+    
+
+{!listing.custom_field && 
+
+               
+               <a onClick={openModal} className="goview-cta">
+
+          <div className="card" 
           onClick={() => SetNewObject(listing)}
 
           >
@@ -676,7 +690,7 @@ export default function Home() {
 }
              
                 <div className="bottom-txt">
-                  <h3 className="post-tts">{listing.name}</h3>
+                  <h3 className="post-tts">{listing.name} - {listing.id}</h3>
                   <p className="subs-descs">{listing.short_description}</p>
                 </div>
                 <div className="vwcentrs text-center">
@@ -688,36 +702,21 @@ export default function Home() {
           </div>
 
           </a>
+}
+
+          </div>
          
          ))}
 
 </Masonry>
     </ResponsiveMasonry>
 
-
-      
-
-          {/* <div className="card" onClick={showModalVideo}>
-            <div className="prod-shws">
-              {/* place where user can add post handlle URL or handlename */}
-              {/* <div className="post-hndls"><a href="#">@lorumipsum <img src="./images/insta.png" /></a></div> */}
-              {/* <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal-15">
-                <div className="pst-socmains">
-                  <img className="social-assts" src="./images/social-all/soc1.jpg" alt />
-                  <img src="./images/vdo-icon.png" className="vdopl-ns" />
-                  <div className="bottom-txt">
-                    <h3 className="post-tts">Lorem IPSUM</h3>
-                    <p className="subs-descs">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-                  </div>
-                </div>
-              </a>
-            </div> */}
-          {/* </div>  */}
-
-
         </div>
       </div>
     </div>
+
+
+
   </section>
 
 
