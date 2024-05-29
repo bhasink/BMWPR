@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useState,useEffect } from "react"
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import "bootstrap";
+// import "bootstrap";
 
 const Header = () => {
 
