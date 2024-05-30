@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 // import "bootstrap";
+import dynamic from 'next/dynamic';
+
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -14,7 +16,10 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Modal from 'react-modal'
 import ReactHtmlParser from 'react-html-parser'
-import Loading from 'react-fullscreen-loading'
+
+const Loading = dynamic(() => import('react-fullscreen-loading'), {
+  ssr: false, 
+});
 
 // import _ from "lodash";
 import RGL, { WidthProvider } from 'react-grid-layout'
