@@ -6,24 +6,24 @@ body {
 }
 
 /* width */
-::-webkit-scrollbar {
+.post-holder::-webkit-scrollbar {
   width: 1.5vh;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.post-holder::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey; 
   border-radius: 10px;
 }
  
 /* Handle */
-::-webkit-scrollbar-thumb {
+.post-holder::-webkit-scrollbar-thumb {
   background: #033dff; 
   border-radius: 10px;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.post-holder::-webkit-scrollbar-thumb:hover {
   background: #0755d7; 
 }
 
@@ -290,18 +290,26 @@ text-transform: uppercase;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin: 0 0 0.3vh;
+  margin: 0 0 0.8vh;
 }
 
 .pst-socmains .bottom-txt  .subs-descs {
-  color: #fff;
-  font-size: 1.8vh;
-  line-height: 1.8vh;
+  color: #dcd6d6;
+    font-size: 1.8vh;
+    line-height: 2vh;
     display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin: 0;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+}
+
+.outer-optns  .rstcts {
+  color: #909090;
+}
+
+.outer-optns .rstcts:hover {
+  color: #909090;
 }
 
 p.dtpst {
@@ -1699,8 +1707,6 @@ visibility: visible;
   width: 100%;
 }
 
-.panelmain-tophdrs .menuset.clnfilter {
-}
 
 .eventsall  .fltrbys,
 .showsalls .fltrbys{
@@ -1791,6 +1797,13 @@ text-align:right;
 .post-holder .post-tts {
   font-weight: 800;
   font-size: 3.5vh;
+  margin: 0;
+}
+
+.post-holder p.dtpst {
+  color: #000;
+  font-size: 2vh;
+  margin: 0 0 2vh 0;
 }
 
 .post-holder p.subs-descs {
@@ -1826,12 +1839,18 @@ text-align:right;
   margin: auto;
 }
 
+.crs-mdls {
+  position: relative;
+  top: 1vh;
+}
+
 .crs-mdls button.close {
   position: relative;
   right: 2vh;
   top: 0vh;
   outline: none;
 }
+
 
 .vdnormals {
   max-width: 34vh;
@@ -1858,6 +1877,11 @@ padding-top: 4vh;
 
 p.dtpst {
   font-size: 1.3vh;
+  margin: 0.8vh 0 2vh;
+}
+
+.post-holder p.subs-descs {
+  font-size: 1.8vh;
 }
 
 .social-gridswbs .col-md-4.col-lg-4 {
@@ -1869,14 +1893,11 @@ p.dtpst {
 }
 
 .pst-socmains .bottom-txt .subs-descs {
-  font-size: 8px;
-  line-height: 8px;
+  font-size: 10px;
+  line-height: 11px;
   margin: 0;
 }
 
-.prod-shws:hover .pst-socmains .bottom-txt {
-  bottom: 9px;
-}
 
 .prod-shws {
   padding-bottom: 2rem;
@@ -1902,8 +1923,20 @@ p.dtpst {
 }
 
 .panelmain-tophdrs {
-  padding:  015px;
-    width: 96%;
+  padding:  15px;
+    width: 64%;
+}
+
+.post-holder{
+  max-height: 53vh;
+}
+
+body.__className_aaf875.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.eventsall .pnl-itemsopns ul li {
+  width: 100%;
 }
 
 .eventsall .pnl-itemsopns ul li{
@@ -2164,6 +2197,10 @@ tr.bullet_cls .hf-mbs {
   .em-comprtabl .table thead th {
       font-size: 12px;
   }
+
+  .outer-optns .rstcts {
+    font-size: 10px;
+}
 
   .mnp-sets{    padding: 14px;}
   .custom-dsnbm .slider span.current-value.showne{

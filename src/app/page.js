@@ -392,6 +392,7 @@ export default function Home() {
                   <h3 className="post-tts">
                     {productionSingleData.name}
                   </h3>
+                  <p class="dtpst">May 18, 2024</p>
                   <p className="subs-descs">
                     {ReactHtmlParser(productionSingleData.description)}
                   </p>
@@ -475,7 +476,7 @@ export default function Home() {
             
             
                 {isAnyChecked() && (
-                  <a href="javascript:void(0);" onClick={resetCheckboxes}>
+                  <a className='rstcts' href="javascript:void(0);" onClick={resetCheckboxes}>
                     Reset Filter
                   </a>
                 )}
