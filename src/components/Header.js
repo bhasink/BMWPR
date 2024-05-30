@@ -111,6 +111,7 @@ const Header = () => {
               </div>
             </div>
             <div className="pnl-itemsopns">
+            <i class="fal fa-times closeallfltr"></i>
               <h2 className="categheads-u">Topics</h2>
               <ul>
                 <li>

@@ -395,6 +395,7 @@ export default function Home() {
                   <p className="subs-descs">
                     {ReactHtmlParser(productionSingleData.description)}
                   </p>
+                 
                 </div>
               </div>
             </div>
@@ -574,6 +575,8 @@ export default function Home() {
               <input type="input" className="form-control" id="inputDate2" placeholder="End Date" />
             </div>
           </div> */}
+
+          
 
                 <div className="pnl-itemsopns">
                   <h2 className="categheads-u">Topics</h2>
@@ -804,8 +807,11 @@ export default function Home() {
                                         <p className="subs-descs">
                                           {listing.short_description}
                                         </p>
+
+                                        <p className='dtpst'>May 18, 2024</p>
+
                                       </div>
-                                      <div className="vwcentrs text-center">
+                                      {/*<div className="vwcentrs text-center">
                                         <a
                                           onClick={openModal}
                                           href="#"
@@ -813,7 +819,7 @@ export default function Home() {
                                         >
                                           View
                                         </a>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                 </div>
