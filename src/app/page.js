@@ -327,18 +327,31 @@ export default function Home() {
   }
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-  
+    const date = new Date(dateString)
+
     // Define an array of month abbreviations
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ]
+
     // Get the day, month, and year from the Date object
-    const day = date.getDate();
-    const month = monthNames[date.getMonth()];
-    const year = date.getFullYear();
-    
+    const day = date.getDate()
+    const month = monthNames[date.getMonth()]
+    const year = date.getFullYear()
+
     // Format the date as "MMM DD, YYYY"
-    return `${month} ${day}, ${year}`;
+    return `${month} ${day}, ${year}`
   }
 
   return (
@@ -588,9 +601,7 @@ export default function Home() {
             </div>
           </div> */}
 
-                <div className="fltrbys"                   
-                onClick={handleClick}
->
+                <div className="fltrbys" onClick={handleClick}>
                   <i className="fal fa-times closeallfltr" />
                 </div>
                 <div className="pnl-itemsopns">
@@ -693,7 +704,7 @@ export default function Home() {
           <div className="panelmain-tophdrs showsalls">
             <div className="menuset clnfilter">
               <div className="pnl-itemsopns"></div>
-              <div className="fltrbys" >
+              <div className="fltrbys">
                 <p>
                   Filter By: <i className="fal fa-filter" />
                 </p>
