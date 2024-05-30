@@ -123,7 +123,7 @@ export default function Home() {
 
       const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API}/listing`)
       console.log(data)
-      const get_feeds = data.data.get_feeds
+      const get_feeds = data.data.get_feeds.data
       setProductionData(get_feeds)
       setTotal(data.data.get_feeds.total)
       setCurrentPageFilter(2)
@@ -158,7 +158,7 @@ export default function Home() {
         setHasMore(false)
       }
 
-      const get_work = data.data.get_feeds
+      const get_work = data.data.get_feeds.data
       const get_work_last_page = data.data.get_feeds.last_page
 
       const n_array = [...productionData, ...get_work]
@@ -284,6 +284,7 @@ export default function Home() {
   }
 
   const resetCheckboxes = () => {
+
     const resetStatus = Object.keys(checkedStatus).reduce((acc, key) => {
       acc[key] = false
       return acc
