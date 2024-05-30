@@ -364,10 +364,10 @@ export default function Home() {
               <div className="modal-body">
                 <div className="post-holder imagefrm-single">
                   <div className="main-pstimgs">
-                    {productionSingleData.post_type == 'Video' && (
+                    {productionSingleData.post_type == 'video' && (
                       <>
                         <iframe
-                          src="https://player.vimeo.com/video/950724818?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                          src={`https://player.vimeo.com/video/${productionSingleData.video}?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479`}
                           width="100%"
                           height="360"
                           frameborder="0"
@@ -390,7 +390,7 @@ export default function Home() {
                     )}
                   </div>
                   <h3 className="post-tts">
-                    {productionSingleData.name} - {productionSingleData.id}
+                    {productionSingleData.name}
                   </h3>
                   <p className="subs-descs">
                     {ReactHtmlParser(productionSingleData.description)}
@@ -738,7 +738,7 @@ export default function Home() {
                                         href={listing.external_link}
                                       >
                                         {listing.platform.split(',')[0] ==
-                                          'Fb' && (
+                                          'FB' && (
                                           <>
                                             @{listing.platform.split(',')[1]}
                                             <img src="/images/faceigs.png" />
@@ -754,12 +754,21 @@ export default function Home() {
                                         )}
 
                                         {listing.platform.split(',')[0] ==
-                                          'Youtube' && (
+                                          'YT' && (
                                           <>
                                             @{listing.platform.split(',')[1]}
                                             <img src="/images/youtube.png" />
                                           </>
                                         )}
+
+                                        {listing.platform.split(',')[0] ==
+                                          'X' && (
+                                          <>
+                                            @{listing.platform.split(',')[1]}
+                                            <img src="/images/twitterx.png" />
+                                          </>
+                                        )}
+
 
                                         {listing.platform.split(',')[0] ==
                                           'others' && (
@@ -788,7 +797,7 @@ export default function Home() {
                                         />
                                       )}
 
-                                      {listing.post_type == 'Video' && (
+                                      {listing.post_type == 'video' && (
                                         <>
                                           <img
                                             src="./images/vdo-icon.png"
