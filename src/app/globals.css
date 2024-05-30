@@ -444,7 +444,10 @@ margin:auto 2px;
   color: #fff;
 }
 
-
+.post-hndls a:hover {
+  text-decoration: none;
+  color: #76c2f7;
+}
 
 
 /* top panel header belogs */
