@@ -332,10 +332,11 @@ export default function Home() {
 
   return (
     <>
+
       {floading && (
-        <Loading
+          <Loading
           loading
-          background="rgba(236, 240, 241, 0.7)"
+          background="rgba(220, 230, 240, 0.4)"
           loaderColor="#3498db"
         />
       )}
@@ -470,6 +471,14 @@ export default function Home() {
                 {/*<a href="#" class="br-bld"><i class="fas fa-bars"></i> Menu</a> */}
                 {/* <a onClick={handleClickSearch} className="srch-pns " href="javascript:void(0);"><i className="far fa-search" /></a> */}
                 {/*<a class="fnddels-pns clnctamn" href="javascript:void(0);"><i class="far fa-angle-down"></i> Calendar</a> */}
+            
+            
+                {isAnyChecked() && (
+                  <a href="javascript:void(0);" onClick={resetCheckboxes}>
+                    Reset Filter
+                  </a>
+                )}
+            
                 <a
                   onClick={handleClick}
                   className="fnddels-pns eventctaall"
@@ -479,11 +488,7 @@ export default function Home() {
                 </a>
 
 
-                {isAnyChecked() && (
-                  <a href="javascript:void(0);" onClick={resetCheckboxes}>
-                    Reset Filter
-                  </a>
-                )}
+              
                 
                 {/*<a class="fnddels-pns eventctaall" href="javascript:void(0);"><i class="far fa-angle-down"></i> Topics</a>
 					<a class="fnddels-pns shwallscta" href="javascript:void(0);"><i class="far fa-angle-down"></i> Platforms</a>*/}
