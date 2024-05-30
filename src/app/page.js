@@ -389,6 +389,7 @@ export default function Home() {
                       </>
                     )}
                   </div>
+                  <div class="post-dnconnts">
                   <h3 className="post-tts">
                     {productionSingleData.name}
                   </h3>
@@ -396,7 +397,7 @@ export default function Home() {
                   <p className="subs-descs">
                     {ReactHtmlParser(productionSingleData.description)}
                   </p>
-                 
+                  </div>
                 </div>
               </div>
             </div>
@@ -578,7 +579,10 @@ export default function Home() {
           </div> */}
 
           
-
+<div className="fltrbys">
+            <i className="fal fa-times closeallfltr" />
+            
+          </div>
                 <div className="pnl-itemsopns">
                   <h2 className="categheads-u">Topics</h2>
                   <ul>
