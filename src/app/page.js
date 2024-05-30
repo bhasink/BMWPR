@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef  } from 'react'
 // import "bootstrap";
 import dynamic from 'next/dynamic'
 
@@ -47,6 +47,10 @@ export default function Home() {
   const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaderN, setLoaderN] = useState(false)
+
+  const [issetFilter, setIssetFilter] = useState(false)
+
+
   const [currentPageFilter, setCurrentPageFilter] = useState(1)
   const [total, setTotal] = useState(1)
   const router = useRouter()
@@ -154,7 +158,9 @@ export default function Home() {
         config,
       )
 
-      if (data.data.get_feeds.length === 0) {
+      console.log(data)
+
+      if (data.data.get_feeds.current_page === data.data.get_feeds.last_page) {
         setHasMore(false)
       }
 
@@ -285,6 +291,16 @@ export default function Home() {
 
   const resetCheckboxes = () => {
 
+    setLoading(true)
+    setProductionData([])
+
+
+    scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    
+
     const resetStatus = Object.keys(checkedStatus).reduce((acc, key) => {
       acc[key] = false
       return acc
@@ -292,12 +308,23 @@ export default function Home() {
     setCheckedStatus(resetStatus)
 
     listing()
+
+    setLoading(false)
+
   }
 
   const getCheckedIds = async () => {
     setIsActive(!isActive)
-
     setFLoading(true)
+    setLoading(true)
+
+
+    scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+
+    setProductionData([])
 
     const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
 
@@ -321,9 +348,13 @@ export default function Home() {
 
       // setTotal(data.data.get_work.total)
       setFLoading(false)
+      setLoading(false)
+
     } catch (err) {
       console.log(err)
       setFLoading(false)
+      setLoading(false)
+
     }
   }
 
