@@ -868,7 +868,7 @@ export default function Home() {
 
                                       <div className="bottom-txt">
                                         <h3 className="post-tts">
-                                          {listing.name} - {listing.id}
+                                          {listing.name} 
                                         </h3>
                                         <p className="subs-descs">
                                           {listing.short_description}
