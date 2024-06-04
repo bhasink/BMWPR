@@ -1,7 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef  } from 'react'
 // import "bootstrap";
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -18,8 +18,8 @@ import Modal from 'react-modal'
 import ReactHtmlParser from 'react-html-parser'
 
 const Loading = dynamic(() => import('react-fullscreen-loading'), {
-  ssr: false, 
-});
+  ssr: false,
+})
 
 // import _ from "lodash";
 import RGL, { WidthProvider } from 'react-grid-layout'
@@ -47,6 +47,10 @@ export default function Home() {
   const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaderN, setLoaderN] = useState(false)
+
+  const [issetFilter, setIssetFilter] = useState(false)
+
+
   const [currentPageFilter, setCurrentPageFilter] = useState(1)
   const [total, setTotal] = useState(1)
   const router = useRouter()
@@ -123,18 +127,16 @@ export default function Home() {
 
       const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API}/listing`)
       console.log(data)
-      const get_feeds = data.data.get_feeds
+      const get_feeds = data.data.get_feeds.data
       setProductionData(get_feeds)
       setTotal(data.data.get_feeds.total)
       setCurrentPageFilter(2)
 
       console.log(get_feeds)
       setFLoading(false)
-
     } catch (err) {
       console.log(err)
       setFLoading(false)
-
     }
   }
 
@@ -156,11 +158,13 @@ export default function Home() {
         config,
       )
 
-      if (data.data.get_feeds.length === 0) {
+      console.log(data)
+
+      if (data.data.get_feeds.current_page === data.data.get_feeds.last_page) {
         setHasMore(false)
       }
 
-      const get_work = data.data.get_feeds
+      const get_work = data.data.get_feeds.data
       const get_work_last_page = data.data.get_feeds.last_page
 
       const n_array = [...productionData, ...get_work]
@@ -281,24 +285,46 @@ export default function Home() {
     }))
   }
 
-   const isAnyChecked = () => {
-    return Object.values(checkedStatus).some(status => status);
-  };
+  const isAnyChecked = () => {
+    return Object.values(checkedStatus).some((status) => status)
+  }
 
   const resetCheckboxes = () => {
-  
+
+    setLoading(true)
+    setProductionData([])
+
+
+    scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    
+
     const resetStatus = Object.keys(checkedStatus).reduce((acc, key) => {
-      acc[key] = false;
-      return acc;
-    }, {});
-    setCheckedStatus(resetStatus);
+      acc[key] = false
+      return acc
+    }, {})
+    setCheckedStatus(resetStatus)
 
     listing()
 
-  };
+    setLoading(false)
+
+  }
 
   const getCheckedIds = async () => {
+    setIsActive(!isActive)
     setFLoading(true)
+    setLoading(true)
+
+
+    scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+
+    setProductionData([])
 
     const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
 
@@ -320,21 +346,50 @@ export default function Home() {
       const get_feeds = data.data.get_feeds.data
       setProductionData(get_feeds)
 
-      setIsActive(!isActive)
-
       // setTotal(data.data.get_work.total)
       setFLoading(false)
+      setLoading(false)
+
     } catch (err) {
       console.log(err)
       setFLoading(false)
+      setLoading(false)
+
     }
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+
+    // Define an array of month abbreviations
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ]
+
+    // Get the day, month, and year from the Date object
+    const day = date.getDate()
+    const month = monthNames[date.getMonth()]
+    const year = date.getFullYear()
+
+    // Format the date as "MMM DD, YYYY"
+    return `${month} ${day}, ${year}`
   }
 
   return (
     <>
-
       {floading && (
-          <Loading
+        <Loading
           loading
           background="rgba(220, 230, 240, 0.4)"
           loaderColor="#3498db"
@@ -390,13 +445,13 @@ export default function Home() {
                     )}
                   </div>
                   <div class="post-dnconnts">
-                  <h3 className="post-tts">
-                    {productionSingleData.name}
-                  </h3>
-                  <p class="dtpst">May 18, 2024</p>
-                  <p className="subs-descs">
-                    {ReactHtmlParser(productionSingleData.description)}
-                  </p>
+                    <h3 className="post-tts">{productionSingleData.name}</h3>
+                    <p class="dtpst">
+                      {formatDate(productionSingleData.publish_date)}
+                    </p>
+                    <p className="subs-descs">
+                      {ReactHtmlParser(productionSingleData.description)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -474,14 +529,17 @@ export default function Home() {
                 {/*<a href="#" class="br-bld"><i class="fas fa-bars"></i> Menu</a> */}
                 {/* <a onClick={handleClickSearch} className="srch-pns " href="javascript:void(0);"><i className="far fa-search" /></a> */}
                 {/*<a class="fnddels-pns clnctamn" href="javascript:void(0);"><i class="far fa-angle-down"></i> Calendar</a> */}
-            
-            
+
                 {isAnyChecked() && (
-                  <a className='rstcts' href="javascript:void(0);" onClick={resetCheckboxes}>
+                  <a
+                    className="rstcts"
+                    href="javascript:void(0);"
+                    onClick={resetCheckboxes}
+                  >
                     Reset Filter
                   </a>
                 )}
-            
+
                 <a
                   onClick={handleClick}
                   className="fnddels-pns eventctaall"
@@ -490,9 +548,6 @@ export default function Home() {
                   Filter By: <i className="fal fa-filter" />
                 </a>
 
-
-              
-                
                 {/*<a class="fnddels-pns eventctaall" href="javascript:void(0);"><i class="far fa-angle-down"></i> Topics</a>
 					<a class="fnddels-pns shwallscta" href="javascript:void(0);"><i class="far fa-angle-down"></i> Platforms</a>*/}
               </div>
@@ -578,11 +633,9 @@ export default function Home() {
             </div>
           </div> */}
 
-          
-<div className="fltrbys">
-            <i className="fal fa-times closeallfltr" />
-            
-          </div>
+                <div className="fltrbys" onClick={handleClick}>
+                  <i className="fal fa-times closeallfltr" />
+                </div>
                 <div className="pnl-itemsopns">
                   <h2 className="categheads-u">Topics</h2>
                   <ul>
@@ -777,7 +830,6 @@ export default function Home() {
                                           </>
                                         )}
 
-
                                         {listing.platform.split(',')[0] ==
                                           'others' && (
                                           <>{listing.platform.split(',')[1]}</>
@@ -816,14 +868,15 @@ export default function Home() {
 
                                       <div className="bottom-txt">
                                         <h3 className="post-tts">
-                                          {listing.name} - {listing.id}
+                                          {listing.name} 
                                         </h3>
                                         <p className="subs-descs">
                                           {listing.short_description}
                                         </p>
 
-                                        <p className='dtpst'>May 18, 2024</p>
-
+                                        <p className="dtpst">
+                                          {formatDate(listing.publish_date)}
+                                        </p>
                                       </div>
                                       {/*<div className="vwcentrs text-center">
                                         <a
@@ -967,7 +1020,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-       
         </div>
       </div>
     </>

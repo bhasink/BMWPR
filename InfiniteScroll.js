@@ -2,57 +2,31 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const InfiniteScroll = ({ filtersLoadMoreData, hasMore }) => {
+  const { ref, inView } = useInView({ triggerOnce: true });
+  const [isHalfwayScrolled, setIsHalfwayScrolled] = useState(false);
 
-//     const { ref, inView } = useInView();
-//     const [hasBeenInView, setHasBeenInView] = useState(false);
-  
+  const handleScroll = () => {
+    const halfwayScroll = window.scrollY + window.innerHeight / 1.5;
+    const documentHeight = document.documentElement.scrollHeight;
 
-//   useEffect(() => {
-//     console.log('inView changed:', inView);
-//     if (inView) {
-//       // Your logic here
-//     }
-//   }, [inView]);
-
-
-//   useEffect(() => {
-//     if (inView && !hasBeenInView) {
-//       setHasBeenInView(true);
-//       filtersLoadMoreData();
-//     }
-//   }, [inView, hasBeenInView]);
-
-
-//   return <div ref={ref} />;
-
-
-const { ref, inView } = useInView({ triggerOnce: true });
-  const [isUserInteracted, setIsUserInteracted] = useState(false);
-
-  const handleUserScroll = () => {
-    setIsUserInteracted(true);
+    setIsHalfwayScrolled(halfwayScroll >= documentHeight / 2);
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleUserScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleUserScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   useEffect(() => {
-    if (isUserInteracted && inView && hasMore) {
-      // Perform actions that should happen when the element is in view
-      console.log('Element is in view');
-
+    if (isHalfwayScrolled && hasMore) {
       filtersLoadMoreData();
-
     }
-  }, [inView, isUserInteracted]);
+  }, [isHalfwayScrolled]);
 
-  return <div ref={isUserInteracted ? ref : null}>.</div>;
-
+  return <div ref={ref}>.</div>;
 };
-export default InfiniteScroll;
 
+export default InfiniteScroll;
