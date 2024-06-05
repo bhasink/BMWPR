@@ -453,6 +453,7 @@ export default function Home() {
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
+                  {/*<a href='#' className='rdmrsd'>Read More</a> */}
                 </div>
               </div>
             </div>
@@ -878,6 +879,7 @@ export default function Home() {
                                           {formatDate(listing.publish_date)}
                                         </p>
                                       </div>
+                                     
                                       {/*<div className="vwcentrs text-center">
                                         <a
                                           onClick={openModal}
@@ -1021,6 +1023,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+         <div className='nws-loadfst'>
+           <img src='./images/pulse-monitor-gray3.png?v=3' />
+         </div>
+
       </div>
     </>
   )

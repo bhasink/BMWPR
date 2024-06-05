@@ -181,11 +181,31 @@ header.site-header.topmain nav.navbar {
   display: none;
 }
 
+.nws-loadfst {
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  text-align: center;
+  width: 100%;
+  left: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.nws-loadfst img {
+  width: 71vh;
+  margin: auto;
+}
+
 .outer-optns a {
   color: #000;
   margin-right: 16px;
   text-decoration:none !important;
-  font-size: 14px;
+  font-size: 2.3vh;
 }
 
 .outer-optns a:hover{
@@ -207,9 +227,9 @@ header.site-header.topmain nav.navbar {
 }
 
 
-.container {
+.social-gridswbs .container, header .container {
   max-width: 100%;
-  padding: 0 4rem;
+  padding: 0 10vh;
 }
 
 
@@ -388,13 +408,13 @@ p.dtpst {
 
 .post-hndls a {
   color: #fff;
-  font-size: 12px;
+  font-size: 2.2vh;
     display: flex;
 }
 
 .post-hndls a img {
-  width: 15px;
-margin:auto 2px;
+  width: 2.7vh;
+  margin: auto 0.4vh;
 }
 
 
@@ -1880,7 +1900,9 @@ text-align:right;
 
 @media screen and (max-width: 800px) and (min-width: 320px){
 
-.container {
+
+
+.social-gridswbs .container, header .container{
   padding: 0 15px;
 }
 
