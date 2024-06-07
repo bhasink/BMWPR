@@ -720,7 +720,6 @@ export default function Home() {
                                           {formatDate(listing.publish_date)}
                                         </p>
                                       </div>
-<<<<<<< HEAD
                                      
                                       {/*<div className="vwcentrs text-center">
                                         <a
@@ -731,8 +730,6 @@ export default function Home() {
                                           View
                                         </a>
                                       </div> */}
-=======
->>>>>>> 87008cc (new updates)
                                     </div>
                                   </div>
                                 </div>
