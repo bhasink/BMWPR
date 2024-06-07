@@ -1900,7 +1900,13 @@ text-align:right;
 
 @media screen and (max-width: 800px) and (min-width: 320px){
 
-
+  .post-holder .post-hndls {
+    position: relative;
+    right: 0;
+    width: auto;
+    display: inline-block;
+    margin-bottom: 2vh;
+}
 
 .social-gridswbs .container, header .container{
   padding: 0 15px;
