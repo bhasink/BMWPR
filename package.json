@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@u-wave/react-vimeo": "^0.9.10",
     "axios": "^1.7.2",
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
@@ -20,6 +21,7 @@
     "react-grid-layout": "^1.4.4",
     "react-html-parser": "^2.0.2",
     "react-intersection-observer": "^9.10.2",
+    "react-lazyload": "^3.2.1",
     "react-loading-skeleton": "^3.4.0",
     "react-masonry-css": "^1.0.16",
     "react-modal": "^3.16.1",

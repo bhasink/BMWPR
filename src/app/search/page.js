@@ -9,7 +9,7 @@ import axios from 'axios'
 import Head from 'next/head'
 import ContentLoader from 'react-content-loader'
 import UserList from '@/components/Header'
-import InfiniteScroll from '../../InfiniteScroll'
+import InfiniteScroll from '../../../InfiniteScroll'
 import { fetchItems } from '@/services/itemService'
 import LoadingSpinner from '@/components/LoadingSpinner' // Import the LoadingSpinner component
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
@@ -28,7 +28,7 @@ import RGL, { WidthProvider } from 'react-grid-layout'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 
-export default function Home() {
+export default function Search() {
   const [isActive, setIsActive] = useState(false)
   const [isActiveConModal, setIsActiveConModal] = useState(false)
 
@@ -397,7 +397,6 @@ export default function Home() {
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
-                  <a href='#' className='rdmrsd'>Read More</a> 
                 </div>
               </div>
             </div>
@@ -720,16 +719,6 @@ export default function Home() {
                                           {formatDate(listing.publish_date)}
                                         </p>
                                       </div>
-                                     
-                                      {/*<div className="vwcentrs text-center">
-                                        <a
-                                          onClick={openModal}
-                                          href="#"
-                                          className="goview-cta"
-                                        >
-                                          View
-                                        </a>
-                                      </div> */}
                                     </div>
                                   </div>
                                 </div>
@@ -798,11 +787,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-         <div className='nws-loadfst'>
-           <img src='./images/pulse-monitor-gray3.png?v=3' />
-         </div>
-
       </div>
     </>
   )
