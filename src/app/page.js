@@ -389,6 +389,49 @@ export default function Home() {
                     )}
                   </div>
                   <div class="post-dnconnts">
+                  <div className="post-hndls">
+                                      <a
+                                        target="_blank"
+                                        href={listing.external_link}
+                                      >
+                                        {listing.platform.split(',')[0] ==
+                                          'FB' && (
+                                          <>
+                                            @{listing.platform.split(',')[1]}
+                                            <img src="/images/faceigs.png" />
+                                          </>
+                                        )}
+
+                                        {listing.platform.split(',')[0] ==
+                                          'IG' && (
+                                          <>
+                                            @{listing.platform.split(',')[1]}
+                                            <img src="/images/insta.png" />
+                                          </>
+                                        )}
+
+                                        {listing.platform.split(',')[0] ==
+                                          'YT' && (
+                                          <>
+                                            @{listing.platform.split(',')[1]}
+                                            <img src="/images/youtube.png" />
+                                          </>
+                                        )}
+
+                                        {listing.platform.split(',')[0] ==
+                                          'X' && (
+                                          <>
+                                            @{listing.platform.split(',')[1]}
+                                            <img src="/images/twitterx.png" />
+                                          </>
+                                        )}
+
+                                        {listing.platform.split(',')[0] ==
+                                          'others' && (
+                                          <>{listing.platform.split(',')[1]}</>
+                                        )}
+                                      </a>
+                                    </div>
                     <h3 className="post-tts">{productionSingleData.name}</h3>
                     <p class="dtpst">
                       {formatDate(productionSingleData.publish_date)}
