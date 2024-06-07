@@ -340,8 +340,7 @@ p.dtpst {
 }
 
 .post-holder {
-  overflow-y: auto;
-  max-height: 88vh;
+ 
 }
 
 .post-holder::-webkit-scrollbar {
@@ -1891,6 +1890,19 @@ text-align:right;
 
 .post-holder .main-pstimgs .post-carslider img {
   max-width: 100%;
+}
+
+
+.post-holder .post-hndls {
+  position: relative;
+  left: 0;
+  display: inline-block;
+  color: #fff;
+  margin-bottom: 3vh;
+}
+
+.post-holder .post-hndls a {
+  color: #fff;
 }
 
 /* responsive css */
