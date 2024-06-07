@@ -401,7 +401,7 @@ export default function Home() {
                                       >
                                       
 
-                                      {productionSingleData.platform.split(',')[0] ==
+                                      {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
                                           'FB' && (
                                           <>
                                             @{productionSingleData.platform.split(',')[1]}
@@ -409,7 +409,7 @@ export default function Home() {
                                           </>
                                         )}
 
-                                        {productionSingleData.platform.split(',')[0] ==
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
                                           'IG' && (
                                           <>
                                             @{productionSingleData.platform.split(',')[1]}
@@ -417,7 +417,7 @@ export default function Home() {
                                           </>
                                         )}
 
-                                        {productionSingleData.platform.split(',')[0] ==
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
                                           'YT' && (
                                           <>
                                             @{productionSingleData.platform.split(',')[1]}
@@ -425,7 +425,7 @@ export default function Home() {
                                           </>
                                         )}
 
-                                        {productionSingleData.platform.split(',')[0] ==
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
                                           'X' && (
                                           <>
                                             @{productionSingleData.platform.split(',')[1]}
@@ -433,7 +433,7 @@ export default function Home() {
                                           </>
                                         )}
 
-                                        {productionSingleData.platform.split(',')[0] ==
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
                                           'others' && (
                                           <>{productionSingleData.platform.split(',')[1]}</>
                                         )}
