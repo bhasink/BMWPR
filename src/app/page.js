@@ -453,7 +453,7 @@ export default function Home() {
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
-                  {/*<a href='#' className='rdmrsd'>Read More</a> */}
+                  <a href='#' className='rdmrsd'>Read More</a> 
                 </div>
               </div>
             </div>
