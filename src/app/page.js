@@ -451,7 +451,7 @@ export default function Home() {
                     </p>
                   </div>
                   <a onClick={handleClickClass}
-        className={isActive ? 'rdmrsd active' : 'rdmrsd'} href='#' >Read More</a> 
+        className={isActiveClass ? 'rdmrsd active' : 'rdmrsd'} href='#' >Read More</a> 
                 </div>
               </div>
             </div>
