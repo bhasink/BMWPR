@@ -358,7 +358,7 @@ export default function Home() {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-dialog modal-dialog-centered ltsmn">
             <div className="modal-content">
               <div className="crs-mdls">
                 <button
@@ -372,37 +372,10 @@ export default function Home() {
                 </button>
               </div>
               <div className="modal-body">
-                <div className="post-holder imagefrm-single">
-                  <div className="main-pstimgs">
-                    {productionSingleData.post_type == 'video' && (
-                      <>
-                        <Vimeo
-                          video={productionSingleData.video}
-                          frameborder="0"
-                          title={productionSingleData.name}
-                        />
-                      </>
-                    )}
-
-                    {productionSingleData.post_type == 'text' && (
-                      <>
-                        <img
-                          src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${productionSingleData.thumbnail.replace(
-                            / /g,
-                            '_',
-                          )}`}
-                          alt
-                        />
-                      </>
-                    )}
-                  </div>
-                  <div className={
-              isActiveClass ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
-            }>
-                  <div  className='post-hndls'>
+              <div  className='post-hndls'>
                                       <a
                                         target="_blank"
-                                        href={productionSingleData.external_link}
+                                        href={productionSingleData.external_link} id="topscw"
                                       >
                                       
 
@@ -447,6 +420,35 @@ export default function Home() {
 
                                       </a>
                                     </div>
+
+                <div className="post-holder imagefrm-single">
+                  <div className="main-pstimgs">
+                    {productionSingleData.post_type == 'video' && (
+                      <>
+                        <Vimeo
+                          video={productionSingleData.video}
+                          frameborder="0"
+                          title={productionSingleData.name}
+                        />
+                      </>
+                    )}
+
+                    {productionSingleData.post_type == 'text' && (
+                      <>
+                        <img
+                          src={`https://res.cloudinary.com/dixxvh4rf/image/upload/q_auto/${productionSingleData.thumbnail.replace(
+                            / /g,
+                            '_',
+                          )}`}
+                          alt
+                        />
+                      </>
+                    )}
+                  </div>
+                  <div className={
+              isActiveClass ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
+            }>
+                 
                     <h3 className="post-tts">{productionSingleData.name}</h3>
                     <p class="dtpst">
                       {formatDate(productionSingleData.publish_date)}
