@@ -48,6 +48,7 @@ export default function Home() {
   const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaderN, setLoaderN] = useState(false)
+  const [isActiveClass, setIsActiveClass] = useState(false);
 
   const [issetFilter, setIssetFilter] = useState(false)
 
@@ -333,6 +334,10 @@ export default function Home() {
     return `${month} ${day}, ${year}`
   }
 
+  const handleClickClass = () => {
+    setIsActive(!isActive);
+  };
+
   return (
     <>
       {floading && (
@@ -445,7 +450,8 @@ export default function Home() {
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
-                  <a href='#' className='rdmrsd'>Read More</a> 
+                  <a onClick={handleClickClass}
+        className={isActive ? 'rdmrsd active' : 'rdmrsd'} href='#' >Read More</a> 
                 </div>
               </div>
             </div>
