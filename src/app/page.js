@@ -159,6 +159,8 @@ export default function Home() {
     setIsActive(!isActive)
   }
 
+  
+
   const handleClickSearch = () => {
     setIsActiveConModal(!isActive)
   }
@@ -224,7 +226,8 @@ export default function Home() {
   }
 
   const [checkedStatus, setCheckedStatus] = useState({})
-
+ 
+  
   useEffect(() => {
     const initialCheckedStatus = topics.reduce((acc, item) => {
       acc[item.id] = false
@@ -335,7 +338,7 @@ export default function Home() {
   }
 
   const handleClickClass = () => {
-    setIsActive(!isActive);
+    setIsActiveClass(!isActive);
   };
 
   return (
@@ -393,8 +396,10 @@ export default function Home() {
                       </>
                     )}
                   </div>
-                  <div class="post-dnconnts">
-                  <div className="post-hndls">
+                  <div className={
+              isActive ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
+            }>
+                  <div  className='post-hndls'>
                                       <a
                                         target="_blank"
                                         href={productionSingleData.external_link}
@@ -446,12 +451,11 @@ export default function Home() {
                     <p class="dtpst">
                       {formatDate(productionSingleData.publish_date)}
                     </p>
-                    <p className="subs-descs">
+                    <p className="subs-descs" >
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
-                  <a onClick={handleClickClass}
-        className={isActiveClass ? 'rdmrsd active' : 'rdmrsd'} href='#' >Read More</a> 
+                  <a onClick={handleClickClass} className="rdmrsd"  href='#' >Read More</a> 
                 </div>
               </div>
             </div>
