@@ -338,7 +338,7 @@ export default function Home() {
   }
 
   const handleClickClass = () => {
-    setIsActiveClass(!isActive);
+    setIsActiveClass(!isActiveClass);
   };
 
   return (
@@ -397,7 +397,7 @@ export default function Home() {
                     )}
                   </div>
                   <div className={
-              isActive ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
+              isActiveClass ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
             }>
                   <div  className='post-hndls'>
                                       <a
