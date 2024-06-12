@@ -107,6 +107,63 @@ export default function Home() {
     }
   }
 
+
+  const filtersLoadMoreDataFilter = async (data) => {
+    setCurrentPageFilter(currentPageFilter + 1)
+    setLoader(true)
+    setLoading(true)
+
+    const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
+
+
+    try {
+      const config = {
+        headers: { 'Content-Type': 'application/json' },
+      }
+
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/filter-data?page=${currentPageFilter}`,
+        {
+          topic: all_ids,
+        },
+        config,
+      )
+
+      console.log(data)
+
+      console.log('cpage -'+data.data.get_feeds.current_page)
+
+      console.log('lpage -'+data.data.get_feeds.last_page)
+
+
+      if (data.data.get_feeds.current_page >= data.data.get_feeds.last_page) {
+        setHasMore(false)
+      }
+
+      const get_work = data.data.get_feeds.data
+      const get_work_last_page = data.data.get_feeds.last_page
+
+      const n_array = [...productionData, ...get_work]
+
+      console.log(n_array)
+
+      setProductionData(n_array)
+
+      if (get_work_last_page == currentPageFilter) {
+        setFilterCoursesLastPage(true)
+      }
+
+      setLoader(false)
+      setLoading(false)
+
+      console.log(data)
+    } catch (err) {
+      console.log(err)
+      setLoader(false)
+      setLoading(false)
+    }
+  }
+
   const filtersLoadMoreData = async (data) => {
     setCurrentPageFilter(currentPageFilter + 1)
     setLoader(true)
@@ -250,6 +307,8 @@ export default function Home() {
   const resetCheckboxes = () => {
     setLoading(true)
     setProductionData([])
+    setHasMore(true)
+    setCurrentPageFilter(1)
 
     scrollTo({
       top: 0,
@@ -268,14 +327,13 @@ export default function Home() {
   }
 
   const getCheckedIds = async () => {
-
-    console.log(Object.keys(checkedStatus).length === 0)
     
-
-
     setIsActive(!isActive)
     setFLoading(true)
     setLoading(true)
+    setHasMore(true)
+    setCurrentPageFilter(1)
+
 
     scrollTo({
       top: 0,
@@ -286,6 +344,7 @@ export default function Home() {
 
     const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
 
+    console.log(all_ids);
 
     try {
       const config = {
@@ -465,7 +524,7 @@ export default function Home() {
             }>
                  
                     <h3 className="post-tts">{productionSingleData.name}</h3>
-                    <p class="dtpst">
+                    <p className="dtpst">
                       {formatDate(productionSingleData.publish_date)}
                     </p>
                     <p className="subs-descs" >
@@ -550,7 +609,7 @@ export default function Home() {
                     href="javascript:void(0);"
                     onClick={resetCheckboxes}
                   >
-                    Reset Filter
+                    Reset Filter   
                   </a>
                 )}
 
@@ -559,7 +618,7 @@ export default function Home() {
                   className="fnddels-pns eventctaall"
                   href="javascript:void(0);"
                 >
-                  Filter By: <i className="fal fa-filter" />
+                Filter By: <i className="fal fa-filter" />
                 </a>
               </div>
             </div>
@@ -784,7 +843,7 @@ export default function Home() {
                                         <>
                                           <img
                                             src="./images/vdo-icon.png"
-                                            class="vdopl-ns"
+                                            className="vdopl-ns"
                                           />
                                         </>
                                       )}
@@ -832,12 +891,22 @@ export default function Home() {
           )}
 
           {error && <p>Error: {error.message}</p>}
-          {!loading && hasMore && (
+       
+          {!isAnyChecked() && !loading && hasMore && (
             <InfiniteScroll
               filtersLoadMoreData={filtersLoadMoreData}
               hasMore={hasMore}
             />
           )}
+
+          {isAnyChecked() && !loading && hasMore && (
+            <InfiniteScroll
+              filtersLoadMoreData={filtersLoadMoreDataFilter}
+              hasMore={hasMore}
+            />
+          )}
+
+
           {!loading && !hasMore && (
             <p className="nmi">No more items to load.</p>
           )}
