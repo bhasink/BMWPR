@@ -268,6 +268,11 @@ export default function Home() {
   }
 
   const getCheckedIds = async () => {
+
+    console.log(Object.keys(checkedStatus).length === 0)
+    
+
+
     setIsActive(!isActive)
     setFLoading(true)
     setLoading(true)
@@ -280,6 +285,7 @@ export default function Home() {
     setProductionData([])
 
     const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
+
 
     try {
       const config = {
@@ -339,6 +345,15 @@ export default function Home() {
 
   const handleClickClass = () => {
     setIsActiveClass(!isActiveClass);
+  };
+
+
+  const isObjectEmpty = (obj) => {
+
+
+    console.log(Object.keys(obj).length === 0)
+
+    return Object.keys(obj).length === 0;
   };
 
   return (
@@ -412,7 +427,7 @@ export default function Home() {
                                         )}
 
                                         {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
-                                          'others' && (
+                                          'Others' && (
                                           <>{productionSingleData.platform.split(',')[1]}</>
                                         )}
 
@@ -652,7 +667,13 @@ export default function Home() {
                   paddingTop: '4vh',
                 }}
               >
-                <button className="aplctas" onClick={() => getCheckedIds()}>
+
+             
+                <button 
+                
+                disabled={!isAnyChecked()}
+
+                className="aplctas" onClick={() => getCheckedIds()}>
                   Apply
                 </button>
               </div>
@@ -734,7 +755,7 @@ export default function Home() {
                                         )}
 
                                         {listing.platform.split(',')[0] ==
-                                          'others' && (
+                                          'Others' && (
                                           <>{listing.platform.split(',')[1]}</>
                                         )}
                                       </a>
