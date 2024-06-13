@@ -65,6 +65,12 @@ export default function Home() {
 
   const handleDateChange = (date) => {
     setStartDate(date);
+
+    if (date === null) {
+      setEndDate(null);
+    } else if (endDate !== null && date > endDate) {
+      setEndDate(null);
+    }
   };
 
   const handleDateChangeEnd = (date) => {
