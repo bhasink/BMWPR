@@ -43,12 +43,13 @@ export default function Home() {
   const [productionData, setProductionData] = useState([])
   const [productionSingleData, setProductionSingleData] = useState([])
   const [topics, setTopics] = useState([])
+  const [platforms, setPlatforms] = useState([])
 
   const [courseMode, setCourseMode] = useState('production')
   const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaderN, setLoaderN] = useState(false)
-  const [isActiveClass, setIsActiveClass] = useState(false);
+  const [isActiveClass, setIsActiveClass] = useState(false)
 
   const [issetFilter, setIssetFilter] = useState(false)
 
@@ -64,6 +65,7 @@ export default function Home() {
     // if (router.isReady) {
 
     topic()
+    platform()
     listing()
     // }
   }, [])
@@ -88,6 +90,21 @@ export default function Home() {
     }
   }
 
+  const platform = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/platforms`,
+      )
+      // console.log('sds')
+      console.log(data)
+      const get_platform = data.data.get_platforms
+      setPlatforms(get_platform)
+      console.log(get_platform)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const listing = async () => {
     try {
       setFLoading(true)
@@ -107,14 +124,12 @@ export default function Home() {
     }
   }
 
-
   const filtersLoadMoreDataFilter = async (data) => {
     setCurrentPageFilter(currentPageFilter + 1)
     setLoader(true)
     setLoading(true)
 
     const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
-
 
     try {
       const config = {
@@ -131,10 +146,9 @@ export default function Home() {
 
       console.log(data)
 
-      console.log('cpage -'+data.data.get_feeds.current_page)
+      console.log('cpage -' + data.data.get_feeds.current_page)
 
-      console.log('lpage -'+data.data.get_feeds.last_page)
-
+      console.log('lpage -' + data.data.get_feeds.last_page)
 
       if (data.data.get_feeds.current_page >= data.data.get_feeds.last_page) {
         setHasMore(false)
@@ -216,8 +230,6 @@ export default function Home() {
     setIsActive(!isActive)
   }
 
-  
-
   const handleClickSearch = () => {
     setIsActiveConModal(!isActive)
   }
@@ -283,8 +295,8 @@ export default function Home() {
   }
 
   const [checkedStatus, setCheckedStatus] = useState({})
- 
-  
+  const [checkedStatusP, setCheckedStatusP] = useState({})
+
   useEffect(() => {
     const initialCheckedStatus = topics.reduce((acc, item) => {
       acc[item.id] = false
@@ -293,6 +305,14 @@ export default function Home() {
     setCheckedStatus(initialCheckedStatus)
   }, [topics])
 
+  useEffect(() => {
+    const initialCheckedStatus = platforms.reduce((acc, item) => {
+      acc[item.id] = false
+      return acc
+    }, {})
+    setCheckedStatusP(initialCheckedStatus)
+  }, [platforms])
+
   const handleCheckboxChange = (id) => {
     setCheckedStatus((prevCheckedStatus) => ({
       ...prevCheckedStatus,
@@ -300,8 +320,22 @@ export default function Home() {
     }))
   }
 
+  const handleCheckboxChangeP = (id) => {
+    setCheckedStatusP((prevCheckedStatus) => ({
+      ...prevCheckedStatus,
+      [id]: !prevCheckedStatus[id],
+    }))
+  }
+
   const isAnyChecked = () => {
-    return Object.values(checkedStatus).some((status) => status)
+  
+    // return Object.values(checkedStatus).some((status) => status)
+
+    return (
+      Object.values(checkedStatus).some(status => status) ||
+      Object.values(checkedStatusP).some(status => status)
+    );
+
   }
 
   const resetCheckboxes = () => {
@@ -319,7 +353,17 @@ export default function Home() {
       acc[key] = false
       return acc
     }, {})
+
     setCheckedStatus(resetStatus)
+
+
+    const resetStatusP = Object.keys(checkedStatusP).reduce((acc, key) => {
+      acc[key] = false
+      return acc
+    }, {})
+    
+    setCheckedStatusP(resetStatusP)
+
 
     listing()
 
@@ -327,13 +371,11 @@ export default function Home() {
   }
 
   const getCheckedIds = async () => {
-    
     setIsActive(!isActive)
     setFLoading(true)
     setLoading(true)
     setHasMore(true)
     setCurrentPageFilter(1)
-
 
     scrollTo({
       top: 0,
@@ -343,8 +385,10 @@ export default function Home() {
     setProductionData([])
 
     const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
+    const all_idsP = Object.keys(checkedStatusP).filter((id) => checkedStatusP[id])
 
-    console.log(all_ids);
+
+    console.log(all_ids)
 
     try {
       const config = {
@@ -355,6 +399,7 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_API}/filter-data`,
         {
           topic: all_ids,
+          platform: all_idsP
         },
         config,
       )
@@ -403,17 +448,14 @@ export default function Home() {
   }
 
   const handleClickClass = () => {
-    setIsActiveClass(!isActiveClass);
-  };
-
+    setIsActiveClass(!isActiveClass)
+  }
 
   const isObjectEmpty = (obj) => {
-
-
     console.log(Object.keys(obj).length === 0)
 
-    return Object.keys(obj).length === 0;
-  };
+    return Object.keys(obj).length === 0
+  }
 
   return (
     <>
@@ -446,54 +488,56 @@ export default function Home() {
                 </button>
               </div>
               <div className="modal-body">
-              <div  className='post-hndls'>
-                                      <a
-                                        target="_blank"
-                                        href={productionSingleData.external_link} id="topscw"
-                                      >
-                                      
+                <div className="post-hndls">
+                  <a
+                    target="_blank"
+                    href={productionSingleData.external_link}
+                    id="topscw"
+                  >
+                    {productionSingleData &&
+                      productionSingleData.platform &&
+                      productionSingleData.platform.split(',')[0] == 'FB' && (
+                        <>
+                          @{productionSingleData.platform.split(',')[1]}
+                          <img src="/images/faceigs.png" />
+                        </>
+                      )}
 
-                                      {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
-                                          'FB' && (
-                                          <>
-                                            @{productionSingleData.platform.split(',')[1]}
-                                            <img src="/images/faceigs.png" />
-                                          </>
-                                        )}
+                    {productionSingleData &&
+                      productionSingleData.platform &&
+                      productionSingleData.platform.split(',')[0] == 'IG' && (
+                        <>
+                          @{productionSingleData.platform.split(',')[1]}
+                          <img src="/images/insta.png" />
+                        </>
+                      )}
 
-                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
-                                          'IG' && (
-                                          <>
-                                            @{productionSingleData.platform.split(',')[1]}
-                                            <img src="/images/insta.png" />
-                                          </>
-                                        )}
+                    {productionSingleData &&
+                      productionSingleData.platform &&
+                      productionSingleData.platform.split(',')[0] == 'YT' && (
+                        <>
+                          @{productionSingleData.platform.split(',')[1]}
+                          <img src="/images/youtube.png" />
+                        </>
+                      )}
 
-                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
-                                          'YT' && (
-                                          <>
-                                            @{productionSingleData.platform.split(',')[1]}
-                                            <img src="/images/youtube.png" />
-                                          </>
-                                        )}
+                    {productionSingleData &&
+                      productionSingleData.platform &&
+                      productionSingleData.platform.split(',')[0] == 'X' && (
+                        <>
+                          @{productionSingleData.platform.split(',')[1]}
+                          <img src="/images/twitterx.png" />
+                        </>
+                      )}
 
-                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
-                                          'X' && (
-                                          <>
-                                            @{productionSingleData.platform.split(',')[1]}
-                                            <img src="/images/twitterx.png" />
-                                          </>
-                                        )}
-
-                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
-                                          'Others' && (
-                                          <>{productionSingleData.platform.split(',')[1]}</>
-                                        )}
-
-
-
-                                      </a>
-                                    </div>
+                    {productionSingleData &&
+                      productionSingleData.platform &&
+                      productionSingleData.platform.split(',')[0] ==
+                        'Others' && (
+                        <>{productionSingleData.platform.split(',')[1]}</>
+                      )}
+                  </a>
+                </div>
 
                 <div className="post-holder imagefrm-single">
                   <div className="main-pstimgs">
@@ -519,19 +563,24 @@ export default function Home() {
                       </>
                     )}
                   </div>
-                  <div className={
-              isActiveClass ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
-            }>
-                 
+                  <div
+                    className={
+                      isActiveClass
+                        ? 'post-dnconnts opscd explrs'
+                        : 'post-dnconnts   explrs'
+                    }
+                  >
                     <h3 className="post-tts">{productionSingleData.name}</h3>
                     <p className="dtpst">
                       {formatDate(productionSingleData.publish_date)}
                     </p>
-                    <p className="subs-descs" >
+                    <p className="subs-descs">
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
-                  <a onClick={handleClickClass} className="rdmrsd"  href='#' >Read More</a> 
+                  <a onClick={handleClickClass} className="rdmrsd" href="#">
+                    Read More
+                  </a>
                 </div>
               </div>
             </div>
@@ -609,7 +658,7 @@ export default function Home() {
                     href="javascript:void(0);"
                     onClick={resetCheckboxes}
                   >
-                    Reset Filter   
+                    Reset Filter
                   </a>
                 )}
 
@@ -618,7 +667,7 @@ export default function Home() {
                   className="fnddels-pns eventctaall"
                   href="javascript:void(0);"
                 >
-                Filter By: <i className="fal fa-filter" />
+                  Filter By: <i className="fal fa-filter" />
                 </a>
               </div>
             </div>
@@ -692,6 +741,17 @@ export default function Home() {
                 <div className="fltrbys" onClick={handleClick}>
                   <i className="fal fa-times closeallfltr" />
                 </div>
+
+              <div className="fltrbys">
+                {/* <i className="fal fa-times closeallfltr" onClick={handleClick} /> */}
+                <h2 className="categheads-u">Date Range</h2>
+                <div className="dtsfiltrs">
+                  <input type="input" className="form-control" id="inputDate" placeholder="Start Date" />
+                  <input type="input" className="form-control" id="inputDate2" placeholder="End Date" />
+                </div>
+              </div>
+
+
                 <div className="pnl-itemsopns">
                   <h2 className="categheads-u">Topics</h2>
                   <ul>
@@ -717,7 +777,48 @@ export default function Home() {
                       ))}
                   </ul>
                 </div>
+
+                <div className="pnl-itemsopns">
+                  <h2 className="categheads-u">Platforms</h2>
+
+                  {/* <ul>
+                    <li>
+                      <div className="form-check form-check-inline onescw">
+                        <label
+                          className="form-check-label"
+                          htmlFor="inlineCheckbox7"
+                        >
+                          Social <i className="far fa-angle-down" />
+                        </label>
+                      </div>
+                    </li>
+                  </ul> */}
+
+                  <ul>
+                    {platforms &&
+                      platforms.map((platform, key) => (
+                        <li key={platform.id}>
+                          <div className="form-check form-check-inline">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              checked={!!checkedStatusP[platform.id]}
+                              onChange={() => handleCheckboxChangeP(platform.id)}
+                              value={platform.id}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor={'inlineCheckbox11' + key}
+                            >
+                              {platform.name}
+                            </label>
+                          </div>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
               </div>
+
               <div
                 className="dtsfiltrs allctsappl"
                 style={{
@@ -726,13 +827,11 @@ export default function Home() {
                   paddingTop: '4vh',
                 }}
               >
-
-             
-                <button 
-                
-                disabled={!isAnyChecked()}
-
-                className="aplctas" onClick={() => getCheckedIds()}>
+                <button
+                  disabled={!isAnyChecked()}
+                  className="aplctas"
+                  onClick={() => getCheckedIds()}
+                >
                   Apply
                 </button>
               </div>
@@ -860,7 +959,7 @@ export default function Home() {
                                           {formatDate(listing.publish_date)}
                                         </p>
                                       </div>
-                                     
+
                                       {/*<div className="vwcentrs text-center">
                                         <a
                                           onClick={openModal}
@@ -891,7 +990,7 @@ export default function Home() {
           )}
 
           {error && <p>Error: {error.message}</p>}
-       
+
           {!isAnyChecked() && !loading && hasMore && (
             <InfiniteScroll
               filtersLoadMoreData={filtersLoadMoreData}
@@ -905,7 +1004,6 @@ export default function Home() {
               hasMore={hasMore}
             />
           )}
-
 
           {!loading && !hasMore && (
             <p className="nmi">No more items to load.</p>
@@ -949,10 +1047,9 @@ export default function Home() {
           </div>
         </div>
 
-         <div className='nws-loadfst'>
-           <img src='./images/pulse-monitor-gray3.png?v=3' />
-         </div>
-
+        <div className="nws-loadfst">
+          <img src="./images/pulse-monitor-gray3.png?v=3" />
+        </div>
       </div>
     </>
   )
