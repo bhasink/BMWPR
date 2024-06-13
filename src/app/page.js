@@ -161,6 +161,9 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_API}/filter-data?page=${currentPageFilter}`,
         {
           topic: all_ids,
+          platform: all_idsP,
+          start_date:startDate,
+          end_date: endDate
         },
         config,
       )
@@ -363,6 +366,8 @@ export default function Home() {
     setProductionData([])
     setHasMore(true)
     setCurrentPageFilter(1)
+    setStartDate(null)
+    setEndDate(null)
 
     scrollTo({
       top: 0,
@@ -419,7 +424,9 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_API}/filter-data`,
         {
           topic: all_ids,
-          platform: all_idsP
+          platform: all_idsP,
+          start_date:startDate,
+          end_date: endDate
         },
         config,
       )
