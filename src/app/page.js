@@ -17,6 +17,8 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Modal from 'react-modal'
 import ReactHtmlParser from 'react-html-parser'
 import Vimeo from '@u-wave/react-vimeo'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Loading = dynamic(() => import('react-fullscreen-loading'), {
   ssr: false,
@@ -56,6 +58,19 @@ export default function Home() {
   const [currentPageFilter, setCurrentPageFilter] = useState(1)
   const [total, setTotal] = useState(1)
   const router = useRouter()
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+
+  const handleDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleDateChangeEnd = (date) => {
+    setEndDate(date);
+  };
+
 
   useEffect(() => {
     require('bootstrap/dist/js/bootstrap.bundle.min.js')
@@ -328,13 +343,12 @@ export default function Home() {
   }
 
   const isAnyChecked = () => {
-  
-    // return Object.values(checkedStatus).some((status) => status)
 
-    return (
-      Object.values(checkedStatus).some(status => status) ||
-      Object.values(checkedStatusP).some(status => status)
-    );
+    const isCheckboxChecked =
+    Object.values(checkedStatus).some(status => status) ||
+    Object.values(checkedStatusP).some(status => status);
+
+    return isCheckboxChecked || startDate != null ? true : false || endDate != null ? true : false;
 
   }
 
@@ -746,8 +760,26 @@ export default function Home() {
                 {/* <i className="fal fa-times closeallfltr" onClick={handleClick} /> */}
                 <h2 className="categheads-u">Date Range</h2>
                 <div className="dtsfiltrs">
-                  <input type="input" className="form-control" id="inputDate" placeholder="Start Date" />
-                  <input type="input" className="form-control" id="inputDate2" placeholder="End Date" />
+
+                <DatePicker 
+        selected={startDate} 
+        onChange={handleDateChange} 
+        placeholderText="Start date" 
+        dateFormat="yyyy-MM-dd" 
+        className="date-picker form-control"
+      />
+
+<DatePicker 
+        selected={endDate} 
+        onChange={handleDateChangeEnd} 
+        placeholderText="End date" 
+        dateFormat="yyyy-MM-dd" 
+        className="date-picker form-control"
+        disabled={!startDate}
+      />
+
+                  {/* <input type="input" className="form-control" id="inputDate" placeholder="Start Date" /> */}
+                  {/* <input type="input" className="form-control" id="inputDate2" placeholder="End Date" /> */}
                 </div>
               </div>
 
