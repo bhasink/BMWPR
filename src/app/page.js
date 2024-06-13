@@ -1054,6 +1054,12 @@ export default function Home() {
             <p className="nmi">No more items to load.</p>
           )}
 
+          {productionData && (
+            <p className="nmi">No Data Available!</p>
+          )}
+
+
+
           <div
             className={isActiveConModal ? 'modal fade show' : 'modal fade'}
             id="exampleModal-11"
