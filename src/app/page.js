@@ -43,6 +43,8 @@ export default function Home() {
   const [error, setError] = useState(null)
 
   const [productionData, setProductionData] = useState([])
+  const isProductionDataEmpty = productionData.length === 0;
+
   const [productionSingleData, setProductionSingleData] = useState([])
   const [topics, setTopics] = useState([])
   const [platforms, setPlatforms] = useState([])
@@ -61,6 +63,7 @@ export default function Home() {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   const handleDateChange = (date) => {
@@ -457,6 +460,56 @@ export default function Home() {
     }
   }
 
+  const handleSearch = async () => {
+
+    setFLoading(true)
+    setLoading(false)
+    setHasMore(true)
+    setCurrentPageFilter(1)
+    setIsOpenS(false)
+    setSearchTerm("")
+
+    scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+
+    setProductionData([])
+
+ 
+    try {
+      const config = {
+        headers: { 'Content-Type': 'application/json' },
+      }
+
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/search`,
+        {
+          search: searchTerm 
+        },
+        config,
+      )
+
+      console.log(data)
+
+      const get_feeds = data.data.get_feeds.data
+      setProductionData(get_feeds)
+
+      // setTotal(data.data.get_work.total)
+      setFLoading(false)
+      setLoading(false)
+
+      setHasMore(false)
+
+    } catch (err) {
+      console.log(err)
+      setFLoading(false)
+      setLoading(false)
+      setHasMore(false)
+
+    }
+  }
+
   const formatDate = (dateString) => {
     const date = new Date(dateString)
 
@@ -531,10 +584,21 @@ export default function Home() {
               </div>
               <div className="modal-body">
               <div className="srch-inps mb-5">
-                <input type="text" placeholder="Search Here..."/>
-                <button  class="srchapls">Apply</button>
+                <input 
+                type="text" 
+                placeholder="Search Here..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button 
+                 class="srchapls"
+                 onClick={handleSearch} 
+                 disabled={floading || !searchTerm}
+                 >Search</button>
               </div>
-	           <p><b>Note:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce mollis ullamcorper leo sed volutpat. Sed pretium pretium orci vitae vulputate. Cras lacus orci, rhoncus vel sodales sed, pellentesque sit amet sem. </p>
+	           <p><b>Note: </b> 
+                Search by Name or specific keywords!
+             </p>
             
               </div>
             </div>
@@ -1081,6 +1145,12 @@ export default function Home() {
                         ))}
                     </Masonry>
                   </ResponsiveMasonry>
+
+
+                  {loading ? isProductionDataEmpty && (
+                    <p className="nmi">No Data Available!</p>
+                  ) : ''}
+
                 </div>
               </div>
             </div>
@@ -1112,9 +1182,7 @@ export default function Home() {
             <p className="nmi">No more items to load.</p>
           )}
 
-          {productionData && (
-            <p className="nmi">No Data Available!</p>
-          )}
+        
 
 
 
