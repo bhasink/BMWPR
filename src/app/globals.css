@@ -1979,6 +1979,15 @@ text-align:right;
 
 @media screen and (max-width: 800px) and (min-width: 320px){
 
+  .srpops.modal-dialog {
+    width: 100%;
+    max-width: 338px;
+}
+
+.srpops.modal-dialog h2 {
+  font-size: 4vh;
+}
+
   .rdmrsd {
     font-size: 2vh;
 }
