@@ -1961,6 +1961,16 @@ text-align:right;
   border: 1px solid;
 }
 
+.srpops.modal-dialog {
+  max-width: 1000px;
+  width: 602px;
+}
+
+.srpops.modal-dialog h2 {
+  font-weight: 700;
+  margin-bottom: 5vh;
+  font-size: 5vh;
+}
 
 /* responsive css */
 

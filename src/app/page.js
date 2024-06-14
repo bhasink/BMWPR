@@ -569,7 +569,7 @@ export default function Home() {
           contentLabel="Search Modal"
         >
 
-<div className="modal-dialog modal-dialog-centered ltsmn">
+<div className="modal-dialog modal-dialog-centered ltsmn srpops">
             <div className="modal-content">
               <div className="crs-mdls">
                 <button
@@ -583,6 +583,7 @@ export default function Home() {
                 </button>
               </div>
               <div className="modal-body">
+                <h2>Search Your Post</h2>
               <div className="srch-inps mb-5">
                 <input 
                 type="text" 
