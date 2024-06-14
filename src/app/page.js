@@ -457,7 +457,9 @@ export default function Home() {
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
-                  <a onClick={handleClickClass} className="rdmrsd"  href='#' >Read More</a> 
+                  <a onClick={handleClickClass} className={
+              isActiveClass ? 'rdmrsd onsced' : 'rdmrsd'
+            }   href='javascript:void(0)' >Read More</a> 
                 </div>
               </div>
             </div>

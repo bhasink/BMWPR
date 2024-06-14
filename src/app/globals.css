@@ -348,6 +348,22 @@ p.dtpst {
   overflow-y: hidden;
 }
 
+.rdmrsd .rms {
+  display: inline-block;
+}
+
+.rdmrsd  .rds {
+  display: none;
+}
+
+.rdmrsd.onsced .rms {
+  display: none;
+}
+
+.rdmrsd.onsced  .rds {
+  display: inline-block;
+}
+
 .post-dnconnts.explrs.opscd {max-height: 12vh;  overflow-y: scroll;}
 
 .ltsmn .post-hndls {
