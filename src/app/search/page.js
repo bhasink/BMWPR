@@ -48,6 +48,7 @@ export default function Search() {
   const [filterCoursesLastPage, setFilterCoursesLastPage] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaderN, setLoaderN] = useState(false)
+  const [isActiveClass, setIsActiveClass] = useState(false);
 
   const [issetFilter, setIssetFilter] = useState(false)
 
@@ -158,6 +159,8 @@ export default function Search() {
     setIsActive(!isActive)
   }
 
+  
+
   const handleClickSearch = () => {
     setIsActiveConModal(!isActive)
   }
@@ -223,7 +226,8 @@ export default function Search() {
   }
 
   const [checkedStatus, setCheckedStatus] = useState({})
-
+ 
+  
   useEffect(() => {
     const initialCheckedStatus = topics.reduce((acc, item) => {
       acc[item.id] = false
@@ -333,6 +337,10 @@ export default function Search() {
     return `${month} ${day}, ${year}`
   }
 
+  const handleClickClass = () => {
+    setIsActiveClass(!isActiveClass);
+  };
+
   return (
     <>
       {floading && (
@@ -350,7 +358,7 @@ export default function Search() {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-dialog modal-dialog-centered ltsmn">
             <div className="modal-content">
               <div className="crs-mdls">
                 <button
@@ -364,6 +372,55 @@ export default function Search() {
                 </button>
               </div>
               <div className="modal-body">
+              <div  className='post-hndls'>
+                                      <a
+                                        target="_blank"
+                                        href={productionSingleData.external_link} id="topscw"
+                                      >
+                                      
+
+                                      {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
+                                          'FB' && (
+                                          <>
+                                            @{productionSingleData.platform.split(',')[1]}
+                                            <img src="/images/faceigs.png" />
+                                          </>
+                                        )}
+
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
+                                          'IG' && (
+                                          <>
+                                            @{productionSingleData.platform.split(',')[1]}
+                                            <img src="/images/insta.png" />
+                                          </>
+                                        )}
+
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
+                                          'YT' && (
+                                          <>
+                                            @{productionSingleData.platform.split(',')[1]}
+                                            <img src="/images/youtube.png" />
+                                          </>
+                                        )}
+
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
+                                          'X' && (
+                                          <>
+                                            @{productionSingleData.platform.split(',')[1]}
+                                            <img src="/images/twitterx.png" />
+                                          </>
+                                        )}
+
+                                        {productionSingleData && productionSingleData.platform && productionSingleData.platform.split(',')[0] ==
+                                          'Others' && (
+                                          <>{productionSingleData.platform.split(',')[1]}</>
+                                        )}
+
+
+
+                                      </a>
+                                    </div>
+
                 <div className="post-holder imagefrm-single">
                   <div className="main-pstimgs">
                     {productionSingleData.post_type == 'video' && (
@@ -388,15 +445,19 @@ export default function Search() {
                       </>
                     )}
                   </div>
-                  <div class="post-dnconnts">
+                  <div className={
+              isActiveClass ? 'post-dnconnts opscd explrs' : 'post-dnconnts   explrs'
+            }>
+                 
                     <h3 className="post-tts">{productionSingleData.name}</h3>
                     <p class="dtpst">
                       {formatDate(productionSingleData.publish_date)}
                     </p>
-                    <p className="subs-descs">
+                    <p className="subs-descs" >
                       {ReactHtmlParser(productionSingleData.description)}
                     </p>
                   </div>
+                  <a onClick={handleClickClass} className="rdmrsd"  href='#' >Read More</a> 
                 </div>
               </div>
             </div>
@@ -673,7 +734,7 @@ export default function Search() {
                                         )}
 
                                         {listing.platform.split(',')[0] ==
-                                          'others' && (
+                                          'Others' && (
                                           <>{listing.platform.split(',')[1]}</>
                                         )}
                                       </a>
@@ -719,6 +780,16 @@ export default function Search() {
                                           {formatDate(listing.publish_date)}
                                         </p>
                                       </div>
+                                     
+                                      {/*<div className="vwcentrs text-center">
+                                        <a
+                                          onClick={openModal}
+                                          href="#"
+                                          className="goview-cta"
+                                        >
+                                          View
+                                        </a>
+                                      </div> */}
                                     </div>
                                   </div>
                                 </div>
@@ -787,6 +858,11 @@ export default function Search() {
             </div>
           </div>
         </div>
+
+         <div className='nws-loadfst'>
+           <img src='./images/pulse-monitor-gray3.png?v=3' />
+         </div>
+
       </div>
     </>
   )

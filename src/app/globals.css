@@ -1944,6 +1944,24 @@ text-align:right;
   font-size: 2.3vh;
 }
 
+/*serachbar css */
+
+.modal-body .srch-inps {
+  display: flex;
+  padding: 0;
+}
+
+.modal-body .srch-inps input {
+  padding: 0 2vh;
+  background: #f5f5f5;
+}
+
+.modal-body .srch-inps .srchapls {
+  background: #fff;
+  border: 1px solid;
+}
+
+
 /* responsive css */
 
 
