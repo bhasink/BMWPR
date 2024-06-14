@@ -298,6 +298,7 @@ export default function Home() {
 
   function openModalS() {
     setIsOpenS(true)
+    setSearchTerm("")
   }
 
   function afterOpenModal() {
@@ -371,7 +372,7 @@ export default function Home() {
     Object.values(checkedStatus).some(status => status) ||
     Object.values(checkedStatusP).some(status => status);
 
-    return isCheckboxChecked || startDate != null ? true : false || endDate != null ? true : false;
+    return isCheckboxChecked || startDate != null ? true : false || endDate != null ? true : false || searchTerm != "";
 
   }
 
@@ -382,6 +383,7 @@ export default function Home() {
     setCurrentPageFilter(1)
     setStartDate(null)
     setEndDate(null)
+    setSearchTerm("")
 
     scrollTo({
       top: 0,
@@ -467,7 +469,7 @@ export default function Home() {
     setHasMore(true)
     setCurrentPageFilter(1)
     setIsOpenS(false)
-    setSearchTerm("")
+    // setSearchTerm("")
 
     scrollTo({
       top: 0,
@@ -583,7 +585,7 @@ export default function Home() {
                 </button>
               </div>
               <div className="modal-body">
-                <h2>Search Your Post</h2>
+                {/* <h2>Search Your Post</h2> */}
               <div className="srch-inps mb-5">
                 <input 
                 type="text" 
@@ -598,7 +600,7 @@ export default function Home() {
                  >Search</button>
               </div>
 	           <p><b>Note: </b> 
-                Search by Name or specific keywords!
+                Search by post name or by specific keywords!
              </p>
             
               </div>
@@ -794,6 +796,7 @@ export default function Home() {
               </div>
 
               <div className="outer-optns">
+
                 {isAnyChecked() && (
                   <a
                     className="rstcts"
