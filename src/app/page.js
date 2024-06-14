@@ -583,7 +583,7 @@ export default function Home() {
                 </button>
               </div>
               <div className="modal-body">
-                <h2>Search Your Post</h2>
+                {/* <h2>Search Your Post</h2> */}
               <div className="srch-inps mb-5">
                 <input 
                 type="text" 
@@ -598,7 +598,7 @@ export default function Home() {
                  >Search</button>
               </div>
 	           <p><b>Note: </b> 
-                Search by Name or specific keywords!
+                Search by post name or by specific keywords!
              </p>
             
               </div>
