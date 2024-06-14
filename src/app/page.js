@@ -744,7 +744,7 @@ export default function Home() {
                   className="fnddels-pns eventctaall"
                   href="javascript:void(0);"
                 >
-                 Search: <i className="fal fa-filter" />
+                  <i className="far fa-search" />
                 </a>
 
                 <a
