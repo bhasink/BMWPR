@@ -286,9 +286,15 @@ export default function Home() {
 
   let subtitle
   const [modalIsOpen, setIsOpen] = useState(false)
+  const [modalIsOpenS, setIsOpenS] = useState(false)
+
 
   function openModal() {
     setIsOpen(true)
+  }
+
+  function openModalS() {
+    setIsOpenS(true)
   }
 
   function afterOpenModal() {
@@ -299,6 +305,11 @@ export default function Home() {
   function closeModal() {
     setIsOpen(false)
   }
+
+  function closeModalS() {
+    setIsOpenS(false)
+  }
+
 
   const customStyles = {
     content: {
@@ -494,7 +505,42 @@ export default function Home() {
         />
       )}
 
+      
+
       <div>
+
+      <Modal
+          isOpen={modalIsOpenS}
+          onRequestClose={closeModalS}
+          style={customStyles}
+          contentLabel="Search Modal"
+        >
+
+<div className="modal-dialog modal-dialog-centered ltsmn">
+            <div className="modal-content">
+              <div className="crs-mdls">
+                <button
+                  onClick={closeModalS}
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div className="modal-body">
+               sfsfsfdsfdsd
+            
+              </div>
+            </div>
+          </div>
+
+      </Modal>
+
+
+
+
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -688,6 +734,14 @@ export default function Home() {
                     Reset Filter
                   </a>
                 )}
+
+                <a
+                  onClick={openModalS}
+                  className="fnddels-pns eventctaall"
+                  href="javascript:void(0);"
+                >
+                 Search: <i className="fal fa-filter" />
+                </a>
 
                 <a
                   onClick={handleClick}
