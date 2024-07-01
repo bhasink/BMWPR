@@ -7,7 +7,7 @@ export const metadata = {
   title: "BMW PR Media",
   description: "BMW PR Media",
   icons: {
-    icon: '/images/favicon.ico', 
+    icon: '/images/favicoon.ico', 
   }
 };
 
