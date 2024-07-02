@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "BMW PR Media",
-  description: "BMW PR Media",
+  title: "BMW Media Pulse Monitor",
+  description: "BMW Media Pulse Monitor",
   icons: {
     icon: '/images/favicoon.ico', 
   }
