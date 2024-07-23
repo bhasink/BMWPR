@@ -10,6 +10,7 @@ import Head from 'next/head'
 import ContentLoader from 'react-content-loader'
 import UserList from '@/components/Header'
 import InfiniteScroll from '../../InfiniteScroll'
+import InfiniteScrollResponsive from '../../InfiniteScrollResponsive'
 import { fetchItems } from '@/services/itemService'
 import LoadingSpinner from '@/components/LoadingSpinner' // Import the LoadingSpinner component
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
@@ -153,7 +154,8 @@ export default function Home() {
     setLoader(true)
     setLoading(true)
 
-    const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id])
+    const all_ids = Object.keys(checkedStatus).filter((id) => checkedStatus[id]);
+    const all_idsP = Object.keys(checkedStatusP).filter((id) => checkedStatusP[id])
 
     try {
       const config = {
@@ -1151,9 +1153,9 @@ export default function Home() {
                   </ResponsiveMasonry>
 
 
-                  {loading ? isProductionDataEmpty && (
+                  {/* {loading ? isProductionDataEmpty && (
                     <p className="nmi">No Data Available!</p>
-                  ) : ''}
+                  ) : ''} */}
 
                 </div>
               </div>
@@ -1176,8 +1178,8 @@ export default function Home() {
           )}
 
           {isAnyChecked() && !loading && hasMore && (
-            <InfiniteScroll
-              filtersLoadMoreData={filtersLoadMoreDataFilter}
+            <InfiniteScrollResponsive
+             filtersLoadMoreDataFilter={filtersLoadMoreDataFilter}
               hasMore={hasMore}
             />
           )}
