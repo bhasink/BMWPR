@@ -453,6 +453,7 @@ export default function Home() {
 
       const get_feeds = data.data.get_feeds.data
       setProductionData(get_feeds)
+      setCurrentPageFilter(2)
 
       // setTotal(data.data.get_work.total)
       setFLoading(false)
