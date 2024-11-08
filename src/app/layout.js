@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "BMW Media Pulse Monitor",
-  description: "BMW Media Pulse Monitor",
+  title: "Media Pulse Monitor",
+  description: "Media Pulse Monitor",
   icons: {
     icon: '/images/favicon.png', 
   }
