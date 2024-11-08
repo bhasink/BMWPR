@@ -7,7 +7,7 @@ export const metadata = {
   title: "BMW Media Pulse Monitor",
   description: "BMW Media Pulse Monitor",
   icons: {
-    icon: '/images/favicoon.ico', 
+    icon: '/images/favicon.png', 
   }
 };
 
